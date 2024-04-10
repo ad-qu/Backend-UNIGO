@@ -45,7 +45,7 @@ const UserSchema = new Schema<User>(
             type: [Schema.Types.ObjectId],
             ref: 'users',
         },
-        record: {
+        history: {
             type: [Schema.Types.ObjectId],
             ref: 'challenges',
         },
@@ -58,7 +58,7 @@ const UserSchema = new Schema<User>(
             type: Boolean,
             required: false,
         },
-        insignia: {
+        badges: {
             type: [String],
             // enum: ["becari", "junior", "amateur", "sensei", "c-master"],
             required: false,

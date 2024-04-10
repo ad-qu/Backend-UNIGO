@@ -30,7 +30,6 @@ const add_Challenge = async (item: Challenge) => {
     const chall = await ChallengeModel.findOne({name: item.name});
     if (chall!=null)
         return "ALREADY_USED_NAME";
-    item.active = true;
     const responseInsert = await ChallengeModel.create(item);
     return responseInsert;
 };
@@ -60,7 +59,7 @@ const get_not_completed = async (idUser: string, data: User) => {
     const user = await UserModel.findById(idUser);
     if (user){
         const challengesNotCompleted = await ChallengeModel.find({
-        _id: { $nin: user.record }
+        _id: { $nin: user.history }
         });
         return challengesNotCompleted; 
     }

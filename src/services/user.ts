@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 import { User } from "../interfaces/user.interface";
 import UserModel from "../models/user";
 import ChallengeModel from "../models/challenge";
-import ItinerarioModel from "../models/itinerario";
+import ItineraryModel from "../models/itinerary";
 import { encrypt } from "../utils/bcrypt.handle";
 
 const get_AllUsers = async() => {
@@ -40,14 +40,14 @@ const get_UserProfile = async(idUser: string) => {
 
 const get_Insignia = async(idUser: string) => {
     const responseItem = await UserModel.findById({_id: idUser});
-    const response = responseItem?.insignia;
+    const response = responseItem?.badges;
     return response;
 };
 
-export const add_Insignia = async(idUser: string, idItinerari: string) => {
-    const itinerario = await ItinerarioModel.findById({_id: idItinerari});
+export const add_Badge = async(idUser: string, idItinerary: string) => {
+    const itinerary = await ItineraryModel.findById({_id: idItinerary});
     const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {$addToSet: {insignia: itinerario?.insignia}}, {new: true});
+        {$addToSet: {insignia: itinerary?.badge}}, {new: true});
     return responseItem;
 };
 
@@ -101,20 +101,20 @@ const add_Challenge = async(idUser: string, idChallenger: string) => {
     console.log(`id Challenger es ${idChallenger}`);
     const chall = await ChallengeModel.findById({_id: idChallenger});
     console.log(`El challenge es ${chall}`);
-    const awardedExp = chall?.exp;
+    const awardedExp = chall?.experience;
     console.log(`La awarded exp es ${awardedExp}`);
     console.log(`La id del user es ${idUser}`);
     const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
         {$addToSet: {record: new Types.ObjectId(idChallenger)},$inc: { exp: awardedExp }}, {new: true});
         console.log(`El responseItem del add_challenge es ${responseItem}`);
 
-    const itin = await ItinerarioModel.findOne({name: chall?.itinerari});
-    const set1 = new Set(responseItem?.record);
+    const itin = await ItineraryModel.findOne({name: chall?.itinerary});
+    const set1 = new Set(responseItem?.history);
     const set2 = new Set(itin?.challenges);
-    const isSubset = itin?.challenges?.every((element) => responseItem?.record?.includes(element));
+    const isSubset = itin?.challenges?.every((element) => responseItem?.history?.includes(element));
     if (isSubset) {
         console.log("Todos los challenges del Itinerario estan completados");
-        add_Insignia(responseItem?.id, itin?.id);
+        add_Badge(responseItem?.id, itin?.id);
     }       
 
     if (responseItem && Number(responseItem?.exp) >= 100){
@@ -218,9 +218,9 @@ const get_History = async (idUser: string, data: User) => {
             path: "record",
             select: "name descr exp",
         });
-    if (responseItem?.record?.length!=0 && responseItem!=null)
+    if (responseItem?.history?.length!=0 && responseItem!=null)
     {
-        return responseItem.record;
+        return responseItem.history;
     }
         return responseItem;
 };

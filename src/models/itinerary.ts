@@ -1,26 +1,26 @@
 /* eslint-disable quotes */
 import { Schema, model } from "mongoose";
 
-import { Itinerario } from "../interfaces/itinerario.interface";
+import { Itinerary } from "../interfaces/itinerary.interface";
 
-const ItinerarioSchema = new Schema<Itinerario>(
+const ItinerarySchema = new Schema<Itinerary>(
     {
         name: {
             type: String,
             required: true,
         },
-        descr: {
+        description: {
             type: String,
-            required: true,
+            required: false,
         },
         challenges: {
             type: [Schema.Types.ObjectId],
             ref: 'challenges',
         },
-        insignia: {
+        badge: {
             type: String,
-            required: false
-        }
+            required: false,
+        },
     },
     {
         timestamps: true,
@@ -28,6 +28,6 @@ const ItinerarioSchema = new Schema<Itinerario>(
     }
 );
 
-const ItinerarioModel = model('itinerarios', ItinerarioSchema);
+const ItineraryModel = model('itineraries', ItinerarySchema);
 
-export default ItinerarioModel;
+export default ItineraryModel;

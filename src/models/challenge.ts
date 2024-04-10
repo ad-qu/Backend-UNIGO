@@ -9,23 +9,23 @@ const ChallengeSchema = new Schema<Challenge>(
             type: String,
             required: true,
         },
-        descr: {
+        description: {
             type: String,
             required: false,
         },
-        lat: {
+        latitude: {
             type: String,
             required: true,
         },
-        long: {
+        longitude: {
             type: String,
             required: true,
         },
-        exp: {
+        experience: {
             type: Number,
             required: true,
         },
-        questions:{
+        question:{
             type:[String],
             required:false,
         },
@@ -33,15 +33,7 @@ const ChallengeSchema = new Schema<Challenge>(
             type: String,
             required: false,
         },
-        users: {
-            type: [Schema.Types.ObjectId],
-            ref: 'users',
-        },
-        active: {
-            type: Boolean,
-            required: false,
-        },
-        itinerari: {
+        itinerary: {
             type: String,
             required: false,
         },

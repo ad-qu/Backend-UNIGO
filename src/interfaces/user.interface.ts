@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongoose";
 
 export interface User {
     name: string;
@@ -9,10 +9,10 @@ export interface User {
     password: string;
     level: Number; //Level that depends on the experience > In order to level up: exp_actual = 50*next_level + 500 
     exp: Number; //Current user experience > Increases each time a challenge is accomplished
+    badges: String[]; //The insignias won by the user
     followers?: ObjectId[];
     following?: ObjectId[];
-    record?: ObjectId[]; //List of ended challenges
+    history?: ObjectId[]; //List of ended challenges
     role: "user" | "admin"; //admin == Has all the permissions 
     active: boolean; //When the user disables his or her account it is set false
-    insignia: String[]; //The insignias won by the user
 }
