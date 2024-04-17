@@ -4,16 +4,16 @@ import { User } from "../interfaces/user.interface";
 import { encrypt, verified } from "../utils/bcrypt.handle";
 import { generateToken, generateTokenCompleted } from "../utils/jwt.handle";
 
-const registerNewUser = async ({ name, surname, username, email, password, role, exp, level}: User) => {
+const registerNewUser = async ({ name, surname, username, email, password, role, experience, level}: User) => {
     const checkIs = await UserModel.findOne({ email });
     if (checkIs) return "ALREADY_USER";
-    exp = 0;
+    experience = 0;
     level = 1;
     if (role==null)
       role= "user";
     const active = true;
     const passHash = await encrypt(password);
-    const registerNewUser = await UserModel.create({email, password: passHash, name, surname, role, exp, username, level, active});
+    const registerNewUser = await UserModel.create({email, password: passHash, name, surname, role, experience, username, level, active});
     console.log(password);
     return registerNewUser;
   };
@@ -50,7 +50,7 @@ const registerNewUser = async ({ name, surname, username, email, password, role,
 
     //const token = generateToken(checkIs.email, checkIs.role);
     const token = generateTokenCompleted(checkIs.id, checkIs.name, checkIs.surname,
-      checkIs.username, checkIs.role, checkIs.level, checkIs.imageURL, checkIs.exp);
+      checkIs.username, checkIs.role, checkIs.level, checkIs.imageURL, checkIs.experience);
     const data = {token};
     return data;
   };
@@ -68,7 +68,7 @@ const registerNewUser = async ({ name, surname, username, email, password, role,
 
     //const token = generateToken(checkIs.email, checkIs.role);
     const token = generateTokenCompleted(checkIs.id, checkIs.name, checkIs.surname,
-      checkIs.username, checkIs.role, checkIs.level, checkIs.imageURL, checkIs.exp);
+      checkIs.username, checkIs.role, checkIs.level, checkIs.imageURL, checkIs.experience);
     const data = {token};
     return data;
   };

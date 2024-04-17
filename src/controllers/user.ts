@@ -256,7 +256,7 @@ const getNotFollowingCount = async ({params, body}:Request, res:Response) => {
     }
 };
 
-export{ getAllUsers, getUser, getUsers, getUserCount, getUsersProfile, getUserProfile, login,
+export { getAllUsers, getUser, getUsers, getUserCount, getUsersProfile, getUserProfile, login,
     signup, updateUser, addFollow, deleteFollow, addChallenge, disableUser, deleteUser, unableUser,
     getFollowersCount, getNotFollowingCount, getFollowingCount, getFollowing, getNotFollowing, getFollowers, 
     getHistory, getInsignia };

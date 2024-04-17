@@ -86,7 +86,7 @@ const solve_Challenge = async (idChallenge: string, answer: string, idUser: stri
             const answerStatus = "ANSWER_OK";
             console.log(`Answer ${answer} OK del challenge ${chall._id}`);
             
-            return `${answerStatus}/${user?.level}/${user?.exp}`;
+            return `${answerStatus}/${user?.level}/${user?.experience}`;
         }
         return "ANSWER_NOK";
     } 

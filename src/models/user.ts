@@ -33,7 +33,7 @@ const UserSchema = new Schema<User>(
             type: Number,
             required: false,
         },
-        exp: {
+        experience: {
             type: Number,
             required: false,
         },
@@ -44,6 +44,10 @@ const UserSchema = new Schema<User>(
         following: {
             type: [Schema.Types.ObjectId],
             ref: 'users',
+        },
+        entities: {
+            type: [Schema.Types.ObjectId],
+            ref: 'entities',
         },
         history: {
             type: [Schema.Types.ObjectId],

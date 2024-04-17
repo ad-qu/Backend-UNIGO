@@ -117,9 +117,9 @@ const add_Challenge = async(idUser: string, idChallenger: string) => {
         add_Badge(responseItem?.id, itin?.id);
     }       
 
-    if (responseItem && Number(responseItem?.exp) >= 100){
+    if (responseItem && Number(responseItem?.experience) >= 100){
         responseItem.level = Number(responseItem.level) + 1;
-        responseItem.exp = Number(responseItem.exp) - 100;
+        responseItem.experience = Number(responseItem.experience) - 100;
         console.log(responseItem);
         responseItem.save();
     }
@@ -216,7 +216,7 @@ const get_History = async (idUser: string, data: User) => {
         {_id: idUser},
         ).populate({
             path: "record",
-            select: "name descr exp",
+            select: "name description experience",
         });
     if (responseItem?.history?.length!=0 && responseItem!=null)
     {
