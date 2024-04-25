@@ -4,8 +4,8 @@ export interface Entity {
     name: string;
     description: string;
     imageURL: string;
-    verified: boolean;
-    admins: String[];
+    verified: string;
+    admins: ObjectId[];
     itineraries?: ObjectId[];
     chat?: ObjectId[];
     news?: ObjectId[];

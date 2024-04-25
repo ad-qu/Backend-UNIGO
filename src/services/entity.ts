@@ -22,11 +22,11 @@ const get_not_Following_Entities = async (idUser: string, data: User) => {
     }   
 };
 
-const get_Following_Entities = async (idUser: string, data: User) => {
+const get_Following_Entities = async (idUser: string) => {
     const responseItem = await UserModel.findById(
         {_id: idUser},
         ).populate({
-            path: "entity",
+            path: "entities",
             select: "name description imageURL verified",
         });
     if (responseItem?.entities?.length != 0 && responseItem != null)
@@ -42,11 +42,26 @@ const delete_Entities = async(idEntity: string) => {
 };
 
 const add_Entity = async (item: Entity) => {
-    const chall = await EntityModel.findOne({name: item.name});
-    if (chall!=null)
+    const entity = await EntityModel.findOne({ name: item.name });
+    if (entity != null)
         return "ALREADY_USED_NAME";
+
     const responseInsert = await EntityModel.create(item);
+
+    const entityId = responseInsert._id;
+
+    await UserModel.findByIdAndUpdate(
+        {_id: item.admins},
+        {$addToSet: {entities: new Types.ObjectId(entityId)}},
+        {new: true}
+    );
     return responseInsert;
+};
+
+const update_Entity = async(idEntity: string, data: User) => {
+ 
+    const responseItem = await EntityModel.findByIdAndUpdate({_id: idEntity}, data, {new: true});
+    return responseItem;
 };
 
 const add_FollowEntity = async(idUser: string, idEntity: string) => {
@@ -66,4 +81,4 @@ const delete_FollowEntity = async(idUser: string, idEntity: string) => {
 };
 
 export { get_AllEntities, get_not_Following_Entities, get_Following_Entities, delete_Entities, 
-    add_Entity, add_FollowEntity, delete_FollowEntity};
+    add_Entity, add_FollowEntity, delete_FollowEntity, update_Entity};

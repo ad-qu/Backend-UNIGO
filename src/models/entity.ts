@@ -18,8 +18,12 @@ const EntitySchema = new Schema<Entity>(
             required: false,
         },
         verified: {
-            type: Boolean,
+            type: String,
             required: false,
+        },
+        admins: {
+            type: [Schema.Types.ObjectId],
+            ref: 'users',
         },
         itineraries: {
             type: [Schema.Types.ObjectId],
