@@ -9,6 +9,11 @@ const get_AllEntities = async() => {
     return responseItem;
 };
 
+const get_Entity = async(idEntity: string) => {
+    const responseItem = await EntityModel.findById({_id: idEntity});
+    return responseItem;
+};
+
 const get_not_Following_Entities = async (idUser: string, data: User) => {
     const user = await UserModel.findById(idUser);
     if (user){
@@ -81,4 +86,4 @@ const delete_FollowEntity = async(idUser: string, idEntity: string) => {
 };
 
 export { get_AllEntities, get_not_Following_Entities, get_Following_Entities, delete_Entities, 
-    add_Entity, add_FollowEntity, delete_FollowEntity, update_Entity};
+    add_Entity, add_FollowEntity, delete_FollowEntity, update_Entity, get_Entity};

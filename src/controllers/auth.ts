@@ -21,6 +21,8 @@ const registerCtrl = async ({ body }: Request, res: Response) => {
 };
 
 const googleControl = async ({ body }: Request, res: Response) => {
+  console.log("1");
+
   try{
     const response = await registerNewUser(body);
     if (response===("ALREADY_USER")){
