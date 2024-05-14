@@ -9,8 +9,8 @@ const get_AllItineraries = async() => {
 };
 
 const add_Itinerary = async (item: Itinerary) => {
-    const chall = await ItineraryModel.findOne({name: item.name});
-    if (chall!=null)
+    const itin = await ItineraryModel.findOne({name: item.name});
+    if (itin != null)
         return "ALREADY_USED_NAME";
     const responseInsert = await ItineraryModel.create(item);
     return responseInsert;
@@ -21,4 +21,4 @@ const delete_Itinerary = async(idItinerary: string) => {
     return responseItem;
 };
 
-export {get_AllItineraries, add_Itinerary, delete_Itinerary};
+export { get_AllItineraries, add_Itinerary, delete_Itinerary };
