@@ -56,7 +56,7 @@ const add_Entity = async (item: Entity) => {
     const entityId = responseInsert._id;
 
     await UserModel.findByIdAndUpdate(
-        {_id: item.admins},
+        {_id: item.admin},
         {$addToSet: {entities: new Types.ObjectId(entityId)}},
         {new: true}
     );

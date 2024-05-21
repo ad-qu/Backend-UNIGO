@@ -21,9 +21,10 @@ const EntitySchema = new Schema<Entity>(
             type: String,
             required: false,
         },
-        admins: {
+        admin: {
             type: [Schema.Types.ObjectId],
             ref: 'users',
+            required: true,
         },
         itineraries: {
             type: [Schema.Types.ObjectId],

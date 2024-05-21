@@ -5,6 +5,7 @@ import { Challenge } from "../interfaces/challenge.interface";
 import ChallengeModel from "../models/challenge";
 import UserModel from "../models/user";
 import { User } from "../interfaces/user.interface";
+import ItineraryModel from "../models/itinerary";
 
 const get_AllChallenges = async() => {
     const responseItem = await ChallengeModel.find({});
@@ -28,9 +29,18 @@ const get_ChallengeCount = async() => {
 
 const add_Challenge = async (item: Challenge) => {
     const chall = await ChallengeModel.findOne({name: item.name});
-    if (chall!=null)
+    if (chall != null)
         return "ALREADY_USED_NAME";
     const responseInsert = await ChallengeModel.create(item);
+
+    const challengeId = responseInsert._id;
+
+    await ItineraryModel.findByIdAndUpdate(
+        {_id: item.itinerary},
+        {$addToSet: {challenges: new Types.ObjectId(challengeId)}},
+        {new: true}
+    );
+
     return responseInsert;
 };
 

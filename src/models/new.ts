@@ -13,6 +13,10 @@ const NewSchema = new Schema<New>(
             type: String,
             required: true,
         },
+        imageURL: {
+            type: String,
+            required: false,
+        },
         date: {
             type: String,
             required: true,

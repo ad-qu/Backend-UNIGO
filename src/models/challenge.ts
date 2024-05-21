@@ -23,7 +23,7 @@ const ChallengeSchema = new Schema<Challenge>(
         },
         experience: {
             type: Number,
-            required: true,
+            required: false,
         },
         question:{
             type:[String],
@@ -35,7 +35,7 @@ const ChallengeSchema = new Schema<Challenge>(
         },
         itinerary: {
             type: String,
-            required: false,
+            required: true,
         },
     },
     {
