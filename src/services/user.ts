@@ -44,12 +44,7 @@ const get_Insignia = async(idUser: string) => {
     return response;
 };
 
-export const add_Badge = async(idUser: string, idItinerary: string) => {
-    const itinerary = await ItineraryModel.findById({_id: idItinerary});
-    const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {$addToSet: {insignia: itinerary?.badge}}, {new: true});
-    return responseItem;
-};
+
 
 const log_in = async(email: string, password: string) => {
     const user = await UserModel.findOne({email: email}, {password: password});
@@ -93,36 +88,6 @@ const delete_Follow = async(idUser: string, idFollowed: string) => {
         {$pull: {following: new Types.ObjectId(followed?.id)}}, {new: true})
         && UserModel.findByIdAndUpdate({_id: idFollowed},
         {$pull: {followers: new Types.ObjectId(user?.id)}}, {new: true});
-    return responseItem;
-};
-
-const add_Challenge = async(idUser: string, idChallenger: string) => {
-    console.log("ENTRO EN EL add_Challenge");
-    console.log(`id Challenger es ${idChallenger}`);
-    const chall = await ChallengeModel.findById({_id: idChallenger});
-    console.log(`El challenge es ${chall}`);
-    const awardedExp = chall?.experience;
-    console.log(`La awarded exp es ${awardedExp}`);
-    console.log(`La id del user es ${idUser}`);
-    const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {$addToSet: {record: new Types.ObjectId(idChallenger)},$inc: { exp: awardedExp }}, {new: true});
-        console.log(`El responseItem del add_challenge es ${responseItem}`);
-
-    const itin = await ItineraryModel.findOne({name: chall?.itinerary});
-    const set1 = new Set(responseItem?.history);
-    const set2 = new Set(itin?.challenges);
-    const isSubset = itin?.challenges?.every((element) => responseItem?.history?.includes(element));
-    if (isSubset) {
-        console.log("Todos los challenges del Itinerario estan completados");
-        add_Badge(responseItem?.id, itin?.id);
-    }       
-
-    if (responseItem && Number(responseItem?.experience) >= 100){
-        responseItem.level = Number(responseItem.level) + 1;
-        responseItem.experience = Number(responseItem.experience) - 100;
-        console.log(responseItem);
-        responseItem.save();
-    }
     return responseItem;
 };
 
@@ -211,19 +176,7 @@ const get_not_following = async (idUser: string, data: User) => {
         return null;
     }   
 };
-const get_History = async (idUser: string, data: User) => {
-    const responseItem = await UserModel.findById(
-        {_id: idUser},
-        ).populate({
-            path: "record",
-            select: "name description experience",
-        });
-    if (responseItem?.history?.length!=0 && responseItem!=null)
-    {
-        return responseItem.history;
-    }
-        return responseItem;
-};
+
 const get_not_following_count = async (idUser: string, data: User) => {
     const user = await UserModel.findById(idUser);
     if (user){
@@ -240,7 +193,7 @@ const get_not_following_count = async (idUser: string, data: User) => {
 
 
 export { get_AllUsers, get_Users, get_User, get_UserCount, get_UsersProfile, get_UserProfile, log_in,
-    sign_up, update_User, add_Follow, delete_Follow, add_Challenge, disable_User, delete_User, 
+    sign_up, update_User, add_Follow, delete_Follow, disable_User, delete_User, 
     unable_User, get_following, get_not_following, get_following_count, get_followers_count, 
-    get_not_following_count, get_followers, get_History, get_Insignia };
+    get_not_following_count, get_followers, get_Insignia };
 

@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 
 import { Itinerary } from "../interfaces/itinerary.interface";
 import ItineraryModel from "../models/itinerary";
@@ -15,14 +15,25 @@ const get_EntityItineraries = async() => {
     return responseItem;
 };
 
-const get_UserItineraries = async(idUser: string) => {
-    const ent = await UserModel.findById({_id: idUser}).populate({path: "entities"});
-    
-    if (ent?.entities?.length != 0 && ent != null) {
-    const responseItem = await EntityModel.findById({_id: ent?.id}).populate({path: "itineraries"});
+const get_Itinerary = async(idItinerary: string) => {
+    const responseItem = await ItineraryModel.findById({_id: idItinerary});
     return responseItem;
+};
+
+
+const get_UserItineraries = async(idUser: string) => {
+    const user = await UserModel.findById({_id: idUser}).populate({path: "entities"});
+    const entIds = user?.entities as ObjectId[];
+    const itineraries = [];
+    
+    for (const entityId of entIds) {
+        const entity = await EntityModel.findById(entityId).populate('itineraries');
+        if (entity?.itineraries) {
+            itineraries.push(...entity.itineraries);
+        }
     }
 
+    return itineraries;
 };
 
 const add_Itinerary = async (idEntity: string, item: Itinerary) => {
@@ -46,9 +57,9 @@ const add_Itinerary = async (idEntity: string, item: Itinerary) => {
 const delete_Itinerary = async(idItinerary: string) => {
     const responseItem = await ItineraryModel.findByIdAndRemove({_id: idItinerary});
 
-    await ChallengeModel.findOneAndRemove({itinerary: idItinerary});
+    await ChallengeModel.deleteMany({itinerary: idItinerary});
 
     return responseItem;
 };
 
-export { get_AllItineraries, add_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries };
+export { get_AllItineraries, add_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries, get_Itinerary };

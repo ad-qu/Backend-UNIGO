@@ -17,10 +17,10 @@ const get_Entity = async(idEntity: string) => {
 const get_not_Following_Entities = async (idUser: string, data: User) => {
     const user = await UserModel.findById(idUser);
     if (user){
-        const usersNotFollowing = await EntityModel.find({
+        const entityNotFollowing = await EntityModel.find({
         _id: { $ne: idUser, $nin: user.entities }
         });
-        return usersNotFollowing; 
+        return entityNotFollowing; 
     }
     else {
         return null;

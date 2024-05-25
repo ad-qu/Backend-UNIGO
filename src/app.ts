@@ -5,7 +5,6 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 
 import "dotenv/config";
-import socket from "./socket";
 import db from "./config/mongo";
 import { router } from "./routes";
 import { version } from "../package.json";
@@ -26,19 +25,34 @@ const corsOrigin = "*";
 
 const httpServer = createServer(app);
 
-const io = new Server(httpServer, {
-  cors: {
-    origin: corsOrigin,
-    credentials: true,
-  },
-});
+const io = new Server(httpServer);
 
-app.get("/", (_, res) =>
-  res.send(`Server is up and running version ${version}`)
-);
+const connectedUsers: { [room: string]: Set<string> } = {};
 
-httpServer.listen(port, () => {
-  console.log("Server version ${version} is listening 🚀");
-
-  socket({ io });
-});
+io.on('connection', (socket) => {
+     console.log('backend connected');
+      socket.on('join-room', (room) => {
+          socket.join(room);
+          if (!connectedUsers[room]) {
+              connectedUsers[room] = new Set();
+          }
+          connectedUsers[room].add(socket.id);
+          io.to(room).emit('connected-users', connectedUsers[room].size);
+      });
+      socket.on('message', (data) => {
+          const { room, userId,senderName, message } = data;
+          console.log('msg ', data);
+          io.to(room).emit('message', { idUser: userId,senderName: senderName, message: message });
+      });
+      socket.on('disconnect', () => {
+          for (const room in connectedUsers) {
+              if (connectedUsers[room].has(socket.id)) {
+                  connectedUsers[room].delete(socket.id);
+                  io.to(room).emit('connected-users', connectedUsers[room].size);
+                  break;
+              }
+          }
+      });
+  });
+  
+  httpServer.listen(port, () => { console.log(`Server version ${version} is listening 🚀`); });

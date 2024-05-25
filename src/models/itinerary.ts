@@ -17,10 +17,6 @@ const ItinerarySchema = new Schema<Itinerary>(
             type: [Schema.Types.ObjectId],
             ref: 'challenges',
         },
-        badge: {
-            type: String,
-            required: false,
-        },
     },
     {
         timestamps: true,

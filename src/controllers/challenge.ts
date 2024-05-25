@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
 import { handleHttp } from "../utils/error.handle";
-import { solve_Challenge, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, update_Challenge, 
-    accept_Challenge, disable_Challenge, delete_Challenge, get_not_completed } from "../services/challenge"; 
+import { solve_Challenge, add_ChallengeToUser, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, update_Challenge, 
+    delete_Challenge, get_HistoryChallenges, add_Badge } from "../services/challenge"; 
 
 const getAllChallenges = async (req:Request, res:Response) => {
     try{
@@ -23,13 +23,23 @@ const getChallenges = async ({params}:Request, res:Response) => {
     }
 };
 
-const getAvailableChallenges = async ({params,body}:Request, res:Response) => {
+const addBadge = async ({params}:Request, res:Response) => {
+    try{
+        const {idUser, idItinerary} = params;
+        const response = await add_Badge(idUser, idItinerary);
+        res.send(response);
+    }catch(e){
+        handleHttp(res, "ERROR_POST_USER");
+    }
+};
+
+const getHistoryChallenges = async ({params}:Request, res:Response) => {
     try{
         const {idUser} = params;
-        const response = await get_not_completed(idUser, body);
+        const response = await get_HistoryChallenges(idUser);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_NOT_FRIENDS");
+        handleHttp(res, "ERROR_GET_HISTORY");
     }
 };
 
@@ -56,14 +66,8 @@ const getChallengeCount = async (req:Request, res:Response) => {
 const addChallenge = async ({body}:Request, res:Response) => {
     try{
         const response = await add_Challenge(body);
-        if (response===("ALREADY_USED_NAME")){
-            res.status(400);
-            res.send(response);
-        }
-        else {
-            res.send(response);
-        }
-    }catch(e){
+        res.send(response);
+    } catch(e){
         handleHttp(res,"ERROR_POST_CHALLENGE");
     }
 };
@@ -78,26 +82,6 @@ const updateChallenge = async ({params, body}:Request, res:Response) => {
     }
 };
 
-const acceptChallenge = async ({params}:Request, res:Response) => {
-    try{
-        const {idUser, idChallenge} = params;
-        const response = await accept_Challenge(idUser, idChallenge);
-        res.send(response);
-    }catch(e){
-        handleHttp(res, "ERROR_ACCEPTING_CHALLENGE");
-    }
-};
-
-const disableChallenge = async ({params}:Request, res:Response) => {
-    try{
-        const {idChallenge} = params;
-        const response = await disable_Challenge(idChallenge);
-        res.send(response);
-    } catch(e){
-        handleHttp(res, "ERROR_DISABLE_CHALLENGE");
-    }
-};
-
 const deleteChallenge = async ({params}:Request, res:Response) => {
     try{
         const {idChallenge} = params;
@@ -105,6 +89,16 @@ const deleteChallenge = async ({params}:Request, res:Response) => {
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_DELETE_CHALLENGE");
+    }
+};
+
+const addChallengeToUser = async ({params}:Request, res:Response) => {
+    try{
+        const {idUser, idChallenge} = params;
+        const response = await add_ChallengeToUser(idUser, idChallenge);
+        res.send(response);
+    }catch(e){
+        handleHttp(res, "ERROR_POST_USER");
     }
 };
 
@@ -117,5 +111,5 @@ const solveChallenge = async ({body}:Request, res:Response) => {
         handleHttp(res, "ERROR_SOLVING_CHALLENGE");
     }
 };
-export{ getAvailableChallenges, solveChallenge, getAllChallenges, getChallenges, getChallenge, getChallengeCount, addChallenge, updateChallenge, 
-    acceptChallenge, disableChallenge, deleteChallenge };
+export{ getHistoryChallenges, addBadge, addChallengeToUser, solveChallenge, getAllChallenges, getChallenges, getChallenge, getChallengeCount, addChallenge, updateChallenge, 
+    deleteChallenge };

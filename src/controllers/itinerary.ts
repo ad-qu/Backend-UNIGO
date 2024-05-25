@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { handleHttp } from "../utils/error.handle";
-import { get_AllItineraries, add_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries } from "../services/itinerary"; 
+import { get_AllItineraries, add_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries, get_Itinerary } from "../services/itinerary"; 
 
 const getAllItineraries = async (req:Request, res:Response) => {
     try{
@@ -14,7 +14,7 @@ const getAllItineraries = async (req:Request, res:Response) => {
 
 const getEntityItineraries = async (req:Request, res:Response) => {
     try{
-        const response = await get_AllItineraries();
+        const response = await get_EntityItineraries();
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_GET_ENTITY_ITINERARIES");
@@ -28,6 +28,17 @@ const getUserItineraries = async ({params, body}:Request, res:Response) => {
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_GET_USER_ITINERARIES");
+    }
+};
+
+const getItinerary = async({params}:Request, res:Response) => {
+    try{
+        const {idItinerary} = params;
+        const response = await get_Itinerary (idItinerary);
+        const data = response ? response: "NOT_FOUND";
+        res.send(data);
+    } catch(e){
+        handleHttp(res, "ERROR_GET_ENTITY");
     }
 };
 
@@ -57,4 +68,4 @@ const deleteItinerary = async ({params}:Request, res:Response) => {
     }
 };
 
-export {getAllItineraries, addItinerary, deleteItinerary, getUserItineraries, getEntityItineraries}
+export {getAllItineraries, addItinerary, deleteItinerary, getUserItineraries, getEntityItineraries, getItinerary}

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { handleHttp } from "../utils/error.handle";
 import { get_AllUsers, get_User, get_Users, get_UserCount, get_UsersProfile, get_UserProfile, log_in,
-    sign_up, update_User, add_Follow, delete_Follow, add_Challenge, disable_User, delete_User, unable_User,
+    sign_up, update_User, add_Follow, delete_Follow, disable_User, delete_User, unable_User,
      get_following, get_not_following, get_following_count, get_followers_count, get_not_following_count, get_followers, 
-     get_History, get_Insignia, add_Badge  } from "../services/user";
+     get_Insignia  } from "../services/user";
 import { encrypt } from "../utils/bcrypt.handle";
 
 const getAllUsers = async(req:Request, res:Response) => {
@@ -77,16 +77,6 @@ const getInsignia = async({params}:Request, res:Response) => {
     }
 };
 
-export const addBadge = async ({params}:Request, res:Response) => {
-    try{
-        const {idUser, idItinerary} = params;
-        const response = await add_Badge(idUser, idItinerary);
-        res.send(response);
-    }catch(e){
-        handleHttp(res, "ERROR_POST_USER");
-    }
-};
-
 const login = async({params}:Request, res:Response) => {
     try{
         const {email, password} = params;
@@ -146,15 +136,7 @@ const deleteFollow = async ({params}:Request, res:Response) => {
     }
 };
 
-const addChallenge = async ({params}:Request, res:Response) => {
-    try{
-        const {idUser, idChallenge} = params;
-        const response = await add_Challenge(idUser, idChallenge);
-        res.send(response);
-    }catch(e){
-        handleHttp(res, "ERROR_POST_USER");
-    }
-};
+
 
 const disableUser = async ({params}:Request, res:Response) => {
     try{
@@ -236,16 +218,6 @@ const getNotFollowing = async ({params, body}:Request, res:Response) => {
     }
 };
 
-const getHistory = async ({params, body}:Request, res:Response) => {
-    try{
-        const {idUser} = params;
-        const response = await get_History(idUser, body);
-        res.send(response);
-    } catch(e){
-        handleHttp(res, "ERROR_GET_HISTORY");
-    }
-};
-
 const getNotFollowingCount = async ({params, body}:Request, res:Response) => {
     try{
         const {idUser} = params;
@@ -257,6 +229,6 @@ const getNotFollowingCount = async ({params, body}:Request, res:Response) => {
 };
 
 export { getAllUsers, getUser, getUsers, getUserCount, getUsersProfile, getUserProfile, login,
-    signup, updateUser, addFollow, deleteFollow, addChallenge, disableUser, deleteUser, unableUser,
+    signup, updateUser, addFollow, deleteFollow, disableUser, deleteUser, unableUser,
     getFollowersCount, getNotFollowingCount, getFollowingCount, getFollowing, getNotFollowing, getFollowers, 
-    getHistory, getInsignia };
+    getInsignia };

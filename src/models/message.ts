@@ -5,6 +5,10 @@ import { Message } from "../interfaces/message.interface";
 
 const MessageSchema = new Schema<Message>(
     {
+        idUser: {
+            type: String,
+            required: true,
+        },
         name: {
             type: String,
             required: true,

@@ -12,7 +12,7 @@ export interface User {
     badges: String[]; //The insignias won by the user
     followers?: ObjectId[];
     following?: ObjectId[];
-    entities?: string;
+    entities?: ObjectId[];
     history?: ObjectId[]; //List of ended challenges
     role: "user" | "admin"; //admin == Has all the permissions 
     active: boolean; //When the user disables his or her account it is set false
