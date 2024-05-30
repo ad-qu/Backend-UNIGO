@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { handleHttp } from "../utils/error.handle";
-import { get_AllEntities, get_not_Following_Entities, get_Following_Entities, delete_Entities, 
+import { get_AllEntities, get_Not_Following_Entities, get_Following_Entities, delete_Entities, 
     add_Entity, delete_FollowEntity, add_FollowEntity, update_Entity, get_Entity } from "../services/entity";
 
 const getAllEntities = async(req:Request, res:Response) => {
@@ -23,17 +23,17 @@ const getEntity = async({params}:Request, res:Response) => {
     }
 };
 
-const getNotFollowingEntities = async ({params, body}:Request, res:Response) => {
+const getNotFollowingEntities = async ({params}:Request, res:Response) => {
     try{
         const {idUser} = params;
-        const response = await get_not_Following_Entities(idUser, body);
+        const response = await get_Not_Following_Entities(idUser);
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_GET_NOT_ENTITIES");
     }
 };
 
-const getFollowersEntities = async ({params, body}:Request, res:Response) => {
+const getFollowersEntities = async ({params}:Request, res:Response) => {
     try{
         const {idUser} = params;
         const response = await get_Following_Entities(idUser);
@@ -56,7 +56,7 @@ const deleteEntities = async ({params}:Request, res:Response) => {
 const addEntity = async({body}:Request, res:Response) => {
     try{
         const response = await add_Entity(body);
-        if (response===("ALREADY_USED_NAME")) {
+        if (response == ("ALREADY_USED_NAME")) {
             res.status(400);
             res.send(response);
         }

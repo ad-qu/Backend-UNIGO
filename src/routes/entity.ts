@@ -1,21 +1,22 @@
-import { checkJwt } from "../middleware/session";
-
-import { getAllEntities, getNotFollowingEntities, getFollowersEntities,
-    addEntity, addFollowEntities, deleteEntities, deleteFollowEntities, updateEntity, getEntity } from "../controllers/entity";
-
 import { Router } from "express";
+import { checkJwt } from "../middleware/session";
+import { getAllEntities, getEntity, getFollowersEntities, getNotFollowingEntities, addEntity, 
+    updateEntity, addFollowEntities, deleteFollowEntities, deleteEntities } from "../controllers/entity";
 
 const router =  Router();
 
-router.get("/get/all", checkJwt, getAllEntities);
+router.get("/get/all", checkJwt, getAllEntities); //Get all entities
+router.get("/get/:idEntity", checkJwt, getEntity); //Get an entity
 
-router.post("/follow/add/:idUser/:idEntity", addFollowEntities);
-router.post("/follow/delete/:idUser/:idEntity", checkJwt, deleteFollowEntities);
-router.get("/following/:idUser", checkJwt, getFollowersEntities);
-router.get("/unfollowing/:idUser", checkJwt, getNotFollowingEntities);
-router.post("/add", checkJwt, addEntity);
-router.delete("/delete/:idEntity", checkJwt, deleteEntities);
-router.post("/update/:idEntity", checkJwt, updateEntity);
-router.get("/get/:idEntity", checkJwt, getEntity); 
+router.get("/following/:idUser", getFollowersEntities); //Get the entities that the user is following
+router.get("/unfollowing/:idUser", checkJwt, getNotFollowingEntities); //Get the entities that the user is not following
+
+router.post("/add", checkJwt, addEntity); //Creates an entity by a user
+router.post("/update/:idEntity", checkJwt, updateEntity); //Update the parameters of an entity
+
+router.post("/follow/add/:idUser/:idEntity", checkJwt, addFollowEntities); //Allows a user to follow an entity (and therefore view its news and chats)
+router.post("/follow/delete/:idUser/:idEntity", checkJwt, deleteFollowEntities); //Allows a user to unfollow an entity
+
+router.delete("/delete/:idEntity", checkJwt, deleteEntities); //Deletes an entity (itineraries, chat and news)
 
 export{ router };

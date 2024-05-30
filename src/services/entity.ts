@@ -14,17 +14,11 @@ const get_Entity = async(idEntity: string) => {
     return responseItem;
 };
 
-const get_not_Following_Entities = async (idUser: string, data: User) => {
+const get_Not_Following_Entities = async (idUser: string) => {
     const user = await UserModel.findById(idUser);
-    if (user){
-        const entityNotFollowing = await EntityModel.find({
-        _id: { $ne: idUser, $nin: user.entities }
-        });
-        return entityNotFollowing; 
-    }
-    else {
-        return null;
-    }   
+    const entityNotFollowing = await EntityModel.find({_id: { $ne: idUser, $nin: user?.entities }})
+    .select('name description imageURL verified admin');
+    return entityNotFollowing;
 };
 
 const get_Following_Entities = async (idUser: string) => {
@@ -32,7 +26,7 @@ const get_Following_Entities = async (idUser: string) => {
         {_id: idUser},
         ).populate({
             path: "entities",
-            select: "name description imageURL verified",
+            select: "name description imageURL verified admin",
         });
     if (responseItem?.entities?.length != 0 && responseItem != null)
     {
@@ -85,5 +79,5 @@ const delete_FollowEntity = async(idUser: string, idEntity: string) => {
     return responseItem;
 };
 
-export { get_AllEntities, get_not_Following_Entities, get_Following_Entities, delete_Entities, 
+export { get_AllEntities, get_Not_Following_Entities, get_Following_Entities, delete_Entities, 
     add_Entity, add_FollowEntity, delete_FollowEntity, update_Entity, get_Entity};

@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongoose';
-import { Itinerary } from './itinerary.interface';
 export interface Challenge {
     name: string;
     description: string;
@@ -8,6 +7,5 @@ export interface Challenge {
     question: String[];
     answer:string,
     experience: Number; //Amount of experience that the challenge will give to the users
-    itinerary: ObjectId,
-    badge: string;
+    itinerary: ObjectId, //
 }

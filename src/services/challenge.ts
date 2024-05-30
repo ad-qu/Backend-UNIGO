@@ -72,13 +72,6 @@ const solve_Challenge = async (idChallenge: string, answer: string, idUser: stri
     return "ANSWER_NOK";  
 };
 
-const add_Badge = async(idUser: string, idChallenge: string) => {
-    const chall = await ChallengeModel.findById({_id: idChallenge});
-    const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {$addToSet: {badges: chall?.badge}}, {new: true});
-    return responseItem;
-};
-
 const add_ChallengeToUser = async(idUser: string, idChallenger: string) => {
     const chall = await ChallengeModel.findById({_id: idChallenger});
     const awardedExp = chall?.experience;
@@ -90,7 +83,6 @@ const add_ChallengeToUser = async(idUser: string, idChallenger: string) => {
     const isSubset = itin?.challenges?.every((element) => responseItem?.history?.includes(element));
     if (isSubset) {
         console.log("Todos los challenges del Itinerario estan completados");
-        add_Badge(responseItem?.id, chall?.id);
     }       
 
     if (responseItem && Number(responseItem?.experience) >= 100){
@@ -113,4 +105,4 @@ const get_ChallengeCount = async() => {
 };
 
 export{ get_HistoryChallenges, add_ChallengeToUser, solve_Challenge, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, 
-    update_Challenge, add_Badge, delete_Challenge };
+    update_Challenge, delete_Challenge };

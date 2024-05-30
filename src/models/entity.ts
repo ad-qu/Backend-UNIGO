@@ -21,22 +21,30 @@ const EntitySchema = new Schema<Entity>(
             type: String,
             required: false,
         },
-        admin: {
+        followers: {
             type: [Schema.Types.ObjectId],
+            ref: 'users',
+            required: false,
+        },
+        admin: {
+            type: Schema.Types.ObjectId,
             ref: 'users',
             required: true,
         },
         itineraries: {
             type: [Schema.Types.ObjectId],
             ref: 'itineraries',
+            required: false,
         },
         chat:{
             type: [Schema.Types.ObjectId],
             ref: 'chats',
+            required: false,
         },
         news: {
             type: [Schema.Types.ObjectId],
             ref: 'news',
+            required: false,
         },
     },
     {

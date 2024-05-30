@@ -9,15 +9,11 @@ const MessageSchema = new Schema<Message>(
             type: String,
             required: true,
         },
-        name: {
+        senderName: {
             type: String,
             required: true,
         },
         message: {
-            type: String,
-            required: true,
-        },
-        date: {
             type: String,
             required: true,
         },

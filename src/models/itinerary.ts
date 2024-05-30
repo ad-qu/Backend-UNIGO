@@ -16,6 +16,7 @@ const ItinerarySchema = new Schema<Itinerary>(
         challenges: {
             type: [Schema.Types.ObjectId],
             ref: 'challenges',
+            required: false,
         },
     },
     {

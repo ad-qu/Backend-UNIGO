@@ -1,6 +1,5 @@
 export interface Message {
     idUser: string;
-    name: string;
+    senderName: string;
     message: string;
-    date: string;
 }

@@ -1,10 +1,8 @@
 import { Types } from "mongoose";
 
-import { User } from "../interfaces/user.interface";
 import UserModel from "../models/user";
-import ChallengeModel from "../models/challenge";
-import ItineraryModel from "../models/itinerary";
 import { encrypt } from "../utils/bcrypt.handle";
+import { User } from "../interfaces/user.interface";
 
 const get_AllUsers = async() => {
     const responseItem = await UserModel.find({});
@@ -43,8 +41,6 @@ const get_Insignia = async(idUser: string) => {
     const response = responseItem?.badges;
     return response;
 };
-
-
 
 const log_in = async(email: string, password: string) => {
     const user = await UserModel.findOne({email: email}, {password: password});
@@ -189,8 +185,6 @@ const get_not_following_count = async (idUser: string, data: User) => {
         return 0;
     }   
 };
-
-
 
 export { get_AllUsers, get_Users, get_User, get_UserCount, get_UsersProfile, get_UserProfile, log_in,
     sign_up, update_User, add_Follow, delete_Follow, disable_User, delete_User, 

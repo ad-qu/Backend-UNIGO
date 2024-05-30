@@ -40,18 +40,22 @@ const UserSchema = new Schema<User>(
         followers: {
             type: [Schema.Types.ObjectId],
             ref: 'users',
+            required: false,
         },
         following: {
             type: [Schema.Types.ObjectId],
             ref: 'users',
+            required: false,
         },
         entities: {
             type: [Schema.Types.ObjectId],
             ref: 'entities',
+            required: false,
         },
         history: {
             type: [Schema.Types.ObjectId],
             ref: 'challenges',
+            required: false,
         },
         role: {
             type: String,

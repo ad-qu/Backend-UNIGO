@@ -1,6 +1,6 @@
 import { hash, compare } from "bcryptjs"; 
-//HASH es para enccriptar y compare para comparar la contraseña plana con la encriptada.
 
+//HASH is to encrypt and compare to compare the plain password with the encrypted one
 const encrypt = async (pass: string) => {
   const passwordHash = await hash(pass, 8);
   return passwordHash;

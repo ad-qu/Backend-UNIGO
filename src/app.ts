@@ -1,11 +1,10 @@
+import "dotenv/config";
 import cors from "cors";
 import config from "config";
 import express from "express";
+import db from "../config/mongo"
 import { Server } from "socket.io";
 import { createServer } from "http";
-
-import "dotenv/config";
-import db from "./config/mongo";
 import { router } from "./routes";
 import { version } from "../package.json";
 
@@ -20,8 +19,8 @@ db().then(() => console.log("Connection is ready..."));
 app.listen(PORT, () => console.log(`Hey! Listening by the port ${PORT}.`));
 
 const port = config.get<number>("port");
-const host = config.get<string>("host");
-const corsOrigin = "*";
+//const host = config.get<string>("host");
+//const corsOrigin = "*";
 
 const httpServer = createServer(app);
 
@@ -40,9 +39,9 @@ io.on('connection', (socket) => {
           io.to(room).emit('connected-users', connectedUsers[room].size);
       });
       socket.on('message', (data) => {
-          const { room, userId,senderName, message } = data;
+          const { room, idUser, senderName, message } = data;
           console.log('msg ', data);
-          io.to(room).emit('message', { idUser: userId,senderName: senderName, message: message });
+          io.to(room).emit('message', { idUser: idUser, senderName: senderName, message: message });
       });
       socket.on('disconnect', () => {
           for (const room in connectedUsers) {
@@ -55,4 +54,5 @@ io.on('connection', (socket) => {
       });
   });
   
-  httpServer.listen(port, () => { console.log(`Server version ${version} is listening 🚀`); });
+  httpServer.listen(port, () => { console.log(`Server version ${version} is listening 🚀`); },
+);

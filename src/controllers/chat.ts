@@ -14,10 +14,22 @@ const getChat = async({params}:Request, res:Response) => {
     }
 };
 
-const addChat = async ({params, body}:Request, res:Response) => {
+const addChat = async ({params}:Request, res:Response) => {
     try{
         const {idEntity} = params;
-        const response = await add_Chat(idEntity, body);
+        const response = await add_Chat(idEntity);
+       
+        res.send(response);
+   
+    }catch(e){
+        handleHttp(res,"ERROR_POST_CHAT");
+    }
+};
+
+const updateChat = async ({params}:Request, res:Response) => {
+    try{
+        const {idEntity} = params;
+        const response = await add_Chat(idEntity);
        
         res.send(response);
    
@@ -36,4 +48,4 @@ const deleteChat = async ({params}:Request, res:Response) => {
     }
 };
 
-export { getChat, addChat, deleteChat };
+export { getChat, addChat, updateChat, deleteChat };

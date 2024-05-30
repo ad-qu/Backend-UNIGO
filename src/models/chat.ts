@@ -5,13 +5,14 @@ import { Chat } from "../interfaces/chat.interface";
 
 const ChatSchema = new Schema<Chat>(
     {
-        entity: {
+        roomId: {
             type: String,
             required: true,
         },
-        messages: {
+        conversation: {
             type: [Schema.Types.ObjectId],
             ref: 'messages',
+            required: false,
         },
     },
     {

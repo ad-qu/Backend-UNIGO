@@ -1,6 +1,6 @@
 import { ObjectId } from "mongoose";
 
 export interface Chat {
-    entity: string;
-    messages?: ObjectId[];
+    roomId: string; //Room identificator of the entity's room
+    conversation: ObjectId[];
 }

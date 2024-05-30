@@ -1,26 +1,32 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 import { New } from "../interfaces/new.interface";
 import EntityModel from "../models/entity";
 import ChatModel from "../models/chat";
 
 const get_Chat = async(idChat: string) => {
-    const responseItem = await ChatModel.findById({_id: idChat});
+    const responseItem = await ChatModel.findById({_id: idChat}).populate('conversation');
     return responseItem;
 };
 
-const add_Chat = async (idEntity: string, item: New) => {
-    const responseInsert = await ChatModel.create(item);
+const add_Chat = async (idEntity: string) => {
+   
+    const roomId = idEntity;
+    const conversation = null;
 
-    const chatId = responseInsert._id;
-
+    const chat = new ChatModel({
+        _id: new mongoose.Types.ObjectId(),
+        roomId,
+        conversation
+    });
+    
     await EntityModel.findByIdAndUpdate(
         {_id: idEntity},
-        {$addToSet: {chat: new Types.ObjectId(chatId)}},
+        {$addToSet: {chat: new Types.ObjectId(chat._id)}},
         {new: true}
     );
 
-    return responseInsert;
+    return chat;
 };
 
 const delete_Chat = async (idChat: string) => {
