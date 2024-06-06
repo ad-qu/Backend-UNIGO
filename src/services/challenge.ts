@@ -26,7 +26,7 @@ const add_Challenge = async (item: Challenge) => {
     const challengeId = responseInsert._id;
     await ItineraryModel.findByIdAndUpdate(
         {_id: item.itinerary},
-        {$addToSet: {challenges: new Types.ObjectId(challengeId)}},
+        {$addToSet: {challenges: new Types.ObjectId(challengeId)}, $inc: {number: 1}},
         {new: true}
     );
     return responseInsert;
@@ -43,7 +43,15 @@ const get_HistoryChallenges = async (idUser: string) => {
     return history;
 };
 
- 
+const get_ItineraryChallenges = async (idItinerary: string) => {
+    const itin = await ItineraryModel.findById(
+        {_id: idItinerary})
+        .populate({path: "challenges", 
+        select: "name description latitude longitude question experience itinerary",});
+
+    const challenges = itin?.challenges as ObjectId[]; 
+    return challenges;
+};
 const delete_Challenge = async (idChallenge: string) => {
     const responseItem = await ChallengeModel.findByIdAndRemove({_id: idChallenge});
 
@@ -104,5 +112,5 @@ const get_ChallengeCount = async() => {
     return responseItem;
 };
 
-export{ get_HistoryChallenges, add_ChallengeToUser, solve_Challenge, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, 
+export{ get_HistoryChallenges, add_ChallengeToUser, get_ItineraryChallenges, solve_Challenge, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, 
     update_Challenge, delete_Challenge };

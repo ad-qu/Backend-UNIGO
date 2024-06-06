@@ -111,7 +111,7 @@ const get_following = async (idUser: string, data: User) => {
             path: "following",
             select: "name surname username level imageURL active",
         });
-    if (responseItem?.following?.length!=0 && responseItem!=null)
+    if (responseItem?.following?.length!=0 && responseItem != null)
     {
         return responseItem.following;
     }

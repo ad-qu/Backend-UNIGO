@@ -13,10 +13,19 @@ const ItinerarySchema = new Schema<Itinerary>(
             type: String,
             required: false,
         },
+        imageURL: {
+            type: String,
+            required: false,
+        },
+
         challenges: {
             type: [Schema.Types.ObjectId],
             ref: 'challenges',
             required: false,
+        },
+        number: {
+            type: Number,
+            required: true,
         },
     },
     {

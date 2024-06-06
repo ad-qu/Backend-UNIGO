@@ -10,10 +10,17 @@ const get_AllItineraries = async() => {
     const responseItem = await ItineraryModel.find({});
     return responseItem;
 };
-const get_EntityItineraries = async() => {
-    const responseItem = await EntityModel.find({}).populate({path: "itineraries"});
-    return responseItem;
+const get_EntityItineraries = async (idEntity: string) => {
+    const entity = await EntityModel.findById(idEntity)
+        .select('itineraries') // Esto selecciona solo el campo itineraries de la entidad
+        .populate({
+            path: "itineraries",
+            select: "name description imageURL number",
+        });
+
+    return entity?.itineraries;
 };
+
 
 const get_Itinerary = async(idItinerary: string) => {
     const responseItem = await ItineraryModel.findById({_id: idItinerary});

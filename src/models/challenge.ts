@@ -34,7 +34,7 @@ const ChallengeSchema = new Schema<Challenge>(
             required: false,
         },
         itinerary: {
-            type: [Schema.Types.ObjectId],
+            type: Schema.Types.ObjectId,
             required: true,
         },
     },

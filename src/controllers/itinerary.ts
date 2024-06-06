@@ -12,9 +12,10 @@ const getAllItineraries = async (req:Request, res:Response) => {
     }
 };
 
-const getEntityItineraries = async (req:Request, res:Response) => {
+const getEntityItineraries = async ({params, body}:Request, res:Response) => {
     try{
-        const response = await get_EntityItineraries();
+        const {idEntity} = params;
+        const response = await get_EntityItineraries(idEntity);
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_GET_ENTITY_ITINERARIES");
