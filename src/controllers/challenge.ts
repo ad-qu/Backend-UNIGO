@@ -65,9 +65,12 @@ const getChallengeCount = async (req:Request, res:Response) => {
 
 const addChallenge = async ({body}:Request, res:Response) => {
     try{
+        console.log("1");
         const response = await add_Challenge(body);
         res.send(response);
     } catch(e){
+        console.log("2");
+
         handleHttp(res,"ERROR_POST_CHALLENGE");
     }
 };

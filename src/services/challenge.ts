@@ -18,8 +18,12 @@ const get_Challenge = async (idChallenge: string) => {
 };
 
 const add_Challenge = async (item: Challenge) => {
-    const itin = await ItineraryModel.findById({_id: item.itinerary, challenges: { $elemMatch: {name: item.name}}})
-    if (itin) { return "ALREADY_CHALLENGE_NAMED" }
+    const existingChallenge = await ChallengeModel.findOne({
+        name: item.name,
+        itinerary: item.itinerary
+    });
+   
+    if (existingChallenge) { return "ALREADY_CHALLENGE_NAMED" }
 
     const responseInsert = await ChallengeModel.create(item);
 
