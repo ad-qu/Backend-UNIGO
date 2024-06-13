@@ -9,10 +9,6 @@ const ItinerarySchema = new Schema<Itinerary>(
             type: String,
             required: true,
         },
-        description: {
-            type: String,
-            required: false,
-        },
         imageURL: {
             type: String,
             required: false,

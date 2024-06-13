@@ -12,9 +12,10 @@ const getAllNews = async (req:Request, res:Response) => {
     }
 };
 
-const getEntityNews = async (req:Request, res:Response) => {
+const getEntityNews = async ({params}:Request, res:Response) => {
     try{
-        const response = await get_EntityNews();
+        const {idEntity} = params;
+        const response = await get_EntityNews(idEntity);
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_GET_ENTITY_NEWS");
@@ -36,10 +37,8 @@ const addNew = async ({params, body}:Request, res:Response) => {
     try{
         const {idEntity} = params;
         const response = await add_New(idEntity, body);
-       
         res.send(response);
-   
-    }catch(e){
+    } catch (e) {
         handleHttp(res,"ERROR_POST_NEW");
     }
 };

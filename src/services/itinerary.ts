@@ -57,7 +57,6 @@ const add_Itinerary = async (idEntity: string, item: Itinerary) => {
         {$addToSet: {itineraries: new Types.ObjectId(itineraryId)}},
         {new: true}
     );
-
     return responseInsert;
 };
 

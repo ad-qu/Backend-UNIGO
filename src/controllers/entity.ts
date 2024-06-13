@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { handleHttp } from "../utils/error.handle";
 import { get_AllEntities, get_Not_Following_Entities, get_Following_Entities, delete_Entities, 
-    add_Entity, delete_FollowEntity, add_FollowEntity, update_Entity, get_Entity } from "../services/entity";
+    add_Entity, delete_FollowEntity, add_FollowEntity, update_Entity, get_Entity, get_FollowingPeople } from "../services/entity";
 
 const getAllEntities = async(req:Request, res:Response) => {
     try{
@@ -40,6 +40,16 @@ const getFollowersEntities = async ({params}:Request, res:Response) => {
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_GET_NOT_ENTITIES");
+    }
+};
+
+const getFollowingPeople = async ({params}:Request, res:Response) => {
+    try{
+        const {idEntity} = params;
+        const response = await get_FollowingPeople(idEntity);
+        res.send(response);
+    } catch(e){
+        handleHttp(res, "ERROR_GET_NOT_USERS");
     }
 };
 
@@ -92,8 +102,8 @@ const updateEntity = async ({params, body}:Request, res:Response) => {
 
 const deleteFollowEntities = async ({params}:Request, res:Response) => {
     try{
-        const {idUser, idFollowed} = params;
-        const response = await delete_FollowEntity(idUser, idFollowed);
+        const {idUser, idEntity} = params;
+        const response = await delete_FollowEntity(idUser, idEntity);
         res.send(response);
     }catch(e){
         handleHttp(res, "ERROR_UNFOLLOWING_ENTITY");
@@ -101,4 +111,4 @@ const deleteFollowEntities = async ({params}:Request, res:Response) => {
 };
 
 export { getAllEntities, getFollowersEntities, getNotFollowingEntities, getEntity, 
-    addFollowEntities, addEntity, deleteEntities, deleteFollowEntities, updateEntity };
+    addFollowEntities, addEntity, deleteEntities, deleteFollowEntities, updateEntity, getFollowingPeople };

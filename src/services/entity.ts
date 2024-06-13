@@ -35,6 +35,14 @@ const get_Following_Entities = async (idUser: string) => {
         return responseItem;
 };
 
+const get_FollowingPeople = async (idEntity: string) => {
+    const responseItem = await EntityModel.findById({_id: idEntity},).populate({
+        path: "followers",
+        select: "name surname username level imageURL active",
+    });
+    return responseItem?.followers;
+};
+
 const delete_Entities = async(idEntity: string) => {
     const responseItem = await EntityModel.findByIdAndRemove({_id: idEntity});
     return responseItem;
@@ -49,11 +57,18 @@ const add_Entity = async (item: Entity) => {
 
     const entityId = responseInsert._id;
 
-    await UserModel.findByIdAndUpdate(
+    const admin = await UserModel.findByIdAndUpdate(
         {_id: item.admin},
         {$addToSet: {entities: new Types.ObjectId(entityId)}},
         {new: true}
     );
+
+    await EntityModel.findByIdAndUpdate(
+        { _id: entityId },
+        { $addToSet: { followers: new Types.ObjectId(admin?.id) } },
+        { new: true }
+    );
+
     return responseInsert;
 };
 
@@ -64,20 +79,30 @@ const update_Entity = async(idEntity: string, data: User) => {
 };
 
 const add_FollowEntity = async(idUser: string, idEntity: string) => {
-    const entity = await EntityModel.findById({_id: idEntity}); //Person being followed
+    const entity = await EntityModel.findById({_id: idEntity});
+    await EntityModel.findByIdAndUpdate(
+        { _id: idEntity },
+        { $addToSet: { followers: new Types.ObjectId(idUser) } },
+        { new: true }
+    );
     const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
         {$addToSet: {entities: new Types.ObjectId(entity?.id)}}, {new: true});
-      
+        
     return responseItem;
 };
 
 const delete_FollowEntity = async(idUser: string, idEntity: string) => {
-    const entity = await UserModel.findById({_id: idEntity}); //Person being followed
+    const entity = await EntityModel.findById({_id: idEntity}); 
+    await EntityModel.findByIdAndUpdate(
+        { _id: idEntity },
+        { $pull: { followers: new Types.ObjectId(idUser) } },
+        { new: true }
+    );
     const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {$pull: {following: new Types.ObjectId(entity?.id)}}, {new: true})
+        {$pull: {entities: new Types.ObjectId(entity?.id)}}, {new: true})
        
     return responseItem;
 };
 
 export { get_AllEntities, get_Not_Following_Entities, get_Following_Entities, delete_Entities, 
-    add_Entity, add_FollowEntity, delete_FollowEntity, update_Entity, get_Entity};
+    add_Entity, add_FollowEntity, delete_FollowEntity, update_Entity, get_Entity, get_FollowingPeople};

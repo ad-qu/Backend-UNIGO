@@ -8,9 +8,10 @@ const get_AllNews = async() => {
     const responseItem = await NewModel.find({});
     return responseItem;
 };
-const get_EntityNews = async() => {
-    const responseItem = await EntityModel.find({}).populate({path: "news"});
-    return responseItem;
+const get_EntityNews = async(idEntity: string) => {
+    console.log(idEntity);
+    const responseItem = await EntityModel.findById({_id: idEntity}).populate({path: "news"});
+    return responseItem?.news;
 };
 
 const get_New = async(idNew: string) => {
@@ -20,15 +21,12 @@ const get_New = async(idNew: string) => {
 
 const add_New = async (idEntity: string, item: New) => {
     const responseInsert = await NewModel.create(item);
-
     const newId = responseInsert._id;
-
     await EntityModel.findByIdAndUpdate(
         {_id: idEntity},
         {$addToSet: {news: new Types.ObjectId(newId)}},
         {new: true}
     );
-
     return responseInsert;
 };
 
