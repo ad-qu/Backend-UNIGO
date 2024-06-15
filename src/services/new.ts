@@ -9,7 +9,6 @@ const get_AllNews = async() => {
     return responseItem;
 };
 const get_EntityNews = async(idEntity: string) => {
-    console.log(idEntity);
     const responseItem = await EntityModel.findById({_id: idEntity}).populate({path: "news"});
     return responseItem?.news;
 };
@@ -32,12 +31,10 @@ const add_New = async (idEntity: string, item: New) => {
 
 const delete_New = async (idNew: string) => {
     const responseItem = await NewModel.findByIdAndRemove({_id: idNew});
-
     await EntityModel.updateOne(
         { news: idNew },
         { $pull: { news: idNew } }
     );
-
     return responseItem;
 };
 

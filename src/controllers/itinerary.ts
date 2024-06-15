@@ -22,7 +22,7 @@ const getEntityItineraries = async ({params, body}:Request, res:Response) => {
     }
 };
 
-const getUserItineraries = async ({params, body}:Request, res:Response) => {
+const getUserItineraries = async ({params}:Request, res:Response) => {
     try{
         const {idUser} = params;
         const response = await get_UserItineraries(idUser);

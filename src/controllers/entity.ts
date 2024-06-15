@@ -81,8 +81,6 @@ const addEntity = async({body}:Request, res:Response) => {
 const addFollowEntities = async ({params}:Request, res:Response) => {
     try{
         const {idUser, idEntity} = params;
-        console.log(idUser + "   " + idEntity);
-
         const response = await add_FollowEntity(idUser, idEntity);
         res.send(response);
     }catch(e){

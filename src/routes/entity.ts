@@ -7,7 +7,7 @@ const router =  Router();
 
 router.get("/get/all", checkJwt, getAllEntities); //Get all entities
 router.get("/get/:idEntity", checkJwt, getEntity); //Get an entity
-router.get("get/followingPeople/:idEntity", getFollowingPeople);
+router.get("/get/followingPeople/:idEntity", getFollowingPeople);
 
 router.get("/following/:idUser", getFollowersEntities); //Get the entities that the user is following
 router.get("/unfollowing/:idUser", checkJwt, getNotFollowingEntities); //Get the entities that the user is not following

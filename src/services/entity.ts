@@ -73,7 +73,6 @@ const add_Entity = async (item: Entity) => {
 };
 
 const update_Entity = async(idEntity: string, data: User) => {
- 
     const responseItem = await EntityModel.findByIdAndUpdate({_id: idEntity}, data, {new: true});
     return responseItem;
 };

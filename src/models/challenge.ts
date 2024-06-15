@@ -37,6 +37,10 @@ const ChallengeSchema = new Schema<Challenge>(
             type: Schema.Types.ObjectId,
             required: true,
         },
+        imageURL: {
+            type: String,
+            required: false,
+        },
     },
     {
         timestamps: true,

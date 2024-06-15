@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { checkJwt } from "../middleware/session";
 import { getAllChallenges, getChallenges, getChallenge, getItineraryChallenges, getChallengeCount, getHistoryChallenges, 
-    addChallenge, updateChallenge, addChallengeToUser, solveChallenge, deleteChallenge } from "../controllers/challenge";  
+    addChallenge, updateChallenge, addChallengeToUser, solveChallenge, deleteChallenge, getNotCompletedChallenges } from "../controllers/challenge";  
 
 const router = Router();
 
@@ -12,6 +12,7 @@ router.get("/get/itineraryChallenges/:idItinerary", getItineraryChallenges); //G
 router.get("/count",checkJwt, getChallengeCount); //Return the total number of challenges
 
 router.get("/get/history/:idUser", checkJwt, getHistoryChallenges); //Get the history of challenges of a user
+router.get("/get/availableChallenges/:idUser", getNotCompletedChallenges);
 
 router.post("/add", checkJwt, addChallenge); //Create a challenge
 router.post("/update/:idChallenge", checkJwt, updateChallenge); //Update the details of a challenge

@@ -12,7 +12,7 @@ const get_AllItineraries = async() => {
 };
 const get_EntityItineraries = async (idEntity: string) => {
     const entity = await EntityModel.findById(idEntity)
-        .select('itineraries') // Esto selecciona solo el campo itineraries de la entidad
+        .select('itineraries') 
         .populate({
             path: "itineraries",
             select: "name description imageURL number",

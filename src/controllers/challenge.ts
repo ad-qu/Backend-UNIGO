@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { handleHttp } from "../utils/error.handle";
 import { solve_Challenge, add_ChallengeToUser, get_ItineraryChallenges, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, update_Challenge, 
-    delete_Challenge, get_HistoryChallenges } from "../services/challenge"; 
+    delete_Challenge, get_HistoryChallenges, get_NotCompletedChallenges } from "../services/challenge"; 
 
 const getAllChallenges = async (req:Request, res:Response) => {
     try{
@@ -30,6 +30,16 @@ const getHistoryChallenges = async ({params}:Request, res:Response) => {
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_GET_HISTORY");
+    }
+};
+
+const getNotCompletedChallenges = async ({params}:Request, res:Response) => {
+    try{
+        const {idUser} = params;
+        const response = await get_NotCompletedChallenges(idUser);
+        res.send(response);
+    } catch(e){
+        handleHttp(res, "ERROR_GET_CHALLENGES");
     }
 };
 
@@ -114,5 +124,5 @@ const solveChallenge = async ({body}:Request, res:Response) => {
         handleHttp(res, "ERROR_SOLVING_CHALLENGE");
     }
 };
-export{ getHistoryChallenges, addChallengeToUser, solveChallenge, getItineraryChallenges, getAllChallenges, getChallenges, getChallenge, getChallengeCount, addChallenge, updateChallenge, 
+export{ getHistoryChallenges, addChallengeToUser, solveChallenge, getNotCompletedChallenges, getItineraryChallenges, getAllChallenges, getChallenges, getChallenge, getChallengeCount, addChallenge, updateChallenge, 
     deleteChallenge };

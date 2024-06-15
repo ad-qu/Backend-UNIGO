@@ -22,17 +22,30 @@ const add_Challenge = async (item: Challenge) => {
         name: item.name,
         itinerary: item.itinerary
     });
-   
-    if (existingChallenge) { return "ALREADY_CHALLENGE_NAMED" }
+    console.log("1");
 
+    if (existingChallenge) {
+        return "ALREADY_CHALLENGE_NAMED";
+    }
+    const itinerary = await ItineraryModel.findById(item.itinerary);
+    if (!itinerary) {
+        throw new Error('ITINERARY_NOT_FOUND');
+    }
+ console.log("2");
+    item.imageURL = itinerary.imageURL;
     const responseInsert = await ChallengeModel.create(item);
 
     const challengeId = responseInsert._id;
     await ItineraryModel.findByIdAndUpdate(
-        {_id: item.itinerary},
-        {$addToSet: {challenges: new Types.ObjectId(challengeId)}, $inc: {number: 1}},
-        {new: true}
+        { _id: item.itinerary },
+        {
+            $addToSet: { challenges: new Types.ObjectId(challengeId) },
+            $inc: { number: 1 }
+        },
+        { new: true }
     );
+    console.log("3");
+
     return responseInsert;
 };
 
@@ -45,6 +58,37 @@ const get_HistoryChallenges = async (idUser: string) => {
     const user = await UserModel.findById({_id: idUser}).populate({path: "history"});
     const history = user?.history as ObjectId[]; 
     return history;
+};
+const get_NotCompletedChallenges = async (idUser: string) => {
+    try {
+        const user = await UserModel.findById(idUser);
+        if (!user) {
+            return null;
+        }
+        const entities = await EntityModel.find({
+            _id: { $in: user.entities }
+        });
+        const itineraryIds = entities.reduce((acc, entity) => {
+            return acc.concat(entity.itineraries || []);
+        }, [] as ObjectId[]);
+
+        const itineraries = await ItineraryModel.find({
+            _id: { $in: itineraryIds }
+        });
+
+        const challengeIds = itineraries.reduce((acc, itinerary) => {
+            return acc.concat(itinerary.challenges || []);
+        }, [] as ObjectId[]);
+
+        const challengesNotCompleted = await ChallengeModel.find({
+            _id: { $in: challengeIds, $nin: user.history }
+        });
+
+        return challengesNotCompleted;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 };
 
 const get_ItineraryChallenges = async (idItinerary: string) => {
@@ -117,4 +161,4 @@ const get_ChallengeCount = async() => {
 };
 
 export{ get_HistoryChallenges, add_ChallengeToUser, get_ItineraryChallenges, solve_Challenge, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, 
-    update_Challenge, delete_Challenge };
+    update_Challenge, delete_Challenge, get_NotCompletedChallenges };
