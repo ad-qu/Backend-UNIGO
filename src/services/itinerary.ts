@@ -29,18 +29,43 @@ const get_Itinerary = async(idItinerary: string) => {
 
 
 const get_UserItineraries = async(idUser: string) => {
-    const user = await UserModel.findById({_id: idUser}).populate({path: "entities"});
-    const entIds = user?.entities as ObjectId[];
-    const itineraries = [];
-    
-    for (const entityId of entIds) {
-        const entity = await EntityModel.findById(entityId).populate('itineraries');
-        if (entity?.itineraries) {
-            itineraries.push(...entity.itineraries);
+    try {
+        const user = await UserModel.findById(idUser);
+        if (!user) {
+            return null;
         }
-    }
 
-    return itineraries;
+        const entities = await EntityModel.find({
+            _id: { $in: user.entities }
+        });
+
+        const itineraryIds = entities.reduce((acc, entity) => {
+            return acc.concat(entity.itineraries || []);
+        }, [] as ObjectId[]);
+
+        const itineraries = await ItineraryModel.find({
+            _id: { $in: itineraryIds }
+        });
+
+        const challengeIds = itineraries.reduce((acc, itinerary) => {
+            return acc.concat(itinerary.challenges || []);
+        }, [] as ObjectId[]);
+
+        const incompleteChallenges = await ChallengeModel.find({
+            _id: { $in: challengeIds, $nin: user.history }
+        });
+
+        const incompleteItineraryIds = Array.from(new Set(incompleteChallenges.map(challenge => challenge.itinerary.toString())));
+
+        const incompleteItineraries = await ItineraryModel.find({
+            _id: { $in: incompleteItineraryIds }
+        });
+
+        return incompleteItineraries;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 };
 
 const add_Itinerary = async (idEntity: string, item: Itinerary) => {
