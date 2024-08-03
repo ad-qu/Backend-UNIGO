@@ -1,78 +1,43 @@
 import { Request, Response } from "express";
-import { registerNewUser, tokenGoogle, tokenUser } from "../services/auth";
 import { handleHttp } from "../utils/error.handle";
 
-const registerCtrl = async ({ body }: Request, res: Response) => {
+import { signupUser, loginUser, signupGoogle } from "../services/auth";
+
+const signupControl = async ({ body }: Request, res: Response) => {
   try{
-    const response = await registerNewUser(body);
-    if (response===("ALREADY_USER")){
+    const response = await signupUser(body);
+    if (response == "ALREADY_USER"){
         res.status(220);
         res.send(response);
-        console.log("Already User");
+        console.log("Already existing user");
     }
     else {
         res.send(response);
     }        
-}catch(e){
+} catch(e){
     handleHttp(res, "ERROR_SIGNUP");
-    console.log("Error Signup");
-}
-
+    console.log("Error");
+  }
 };
 
-const googleControl = async ({ body }: Request, res: Response) => {
-  console.log("1");
-
-  try{
-    const response = await registerNewUser(body);
-    if (response===("ALREADY_USER")){
-      const { email, password } = body;
-      const responseUser = await tokenGoogle({ email, password });
-      res.status(200);
-      res.send(responseUser);
-      console.log("Google User already exists, ");
-    }
-    else {
-        res.send(response);
-    }        
-}catch(e){
-    handleHttp(res, "ERROR_GOGLE_SIGNUP");
-    console.log("Error GOOGLE Signup");
-}
-
-};
-
-
-// const loginCtrl = async ({ body }: Request, res: Response) => {
-  
-//   const { email, password } = body;
-//   const responseUser = await loginUser({ email, password });
-
-//   if (responseUser === "PASSWORD_INCORRECT") {
-//     res.status(403);
-//     res.send(responseUser);
-//   } else {
-//     res.send(responseUser);
-//   }
-// };
-
-const tokenCtrl = async ({ body }: Request, res: Response) => {
+const loginControl = async ({ body }: Request, res: Response) => {
   
   const { email, password } = body;
-  const responseUser = await tokenUser({ email, password });
-  console.log("Password del user: " + password);
+  const responseUser = await loginUser({ email, password });
 
-  if (responseUser === "PASSWORD_INCORRECT") {
+  console.log("Password of the user: " + password);
+
+  if (responseUser == "PASSWORD_INCORRECT") {
     res.status(222);
-    console.log("Password Incorrect");
+    console.log("Password incorrect");
     res.send(responseUser);
-  } else if (responseUser === "NOT_FOUND_USER") {
+  } else if (responseUser == "NOT_FOUND_USER") {
     res.status(221);
-    console.log("Not Found User");
+    console.log("Not found User");
     res.send(responseUser);    
-  } else if (responseUser === "NOT_ACTIVE_USER") {
+  } else if (responseUser == "NOT_ACTIVE_USER") {
     res.status(220);
-    console.log("Not Active User");
+    console.log("No active user");
     res.send(responseUser);
   } else {
     res.status(200);
@@ -80,4 +45,21 @@ const tokenCtrl = async ({ body }: Request, res: Response) => {
   }  
 };
 
-export { registerCtrl, tokenCtrl, googleControl };
+const googleControl = async ({ body }: Request, res: Response) => {
+  try{
+    const response = await signupGoogle(body);
+    if (response == "ALREADY_USER"){
+        res.status(220);
+        res.send(response);
+        console.log("Already existing Google user");
+    }
+    else {
+        res.send(response);
+    }        
+} catch(e){
+    handleHttp(res, "ERROR_SIGNUP");
+    console.log("Error");
+  }
+};
+
+export { signupControl, loginControl, googleControl };

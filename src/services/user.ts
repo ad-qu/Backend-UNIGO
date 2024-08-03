@@ -1,8 +1,15 @@
 import { Types } from "mongoose";
-
-import UserModel from "../models/user";
 import { encrypt } from "../utils/bcrypt.handle";
+
 import { User } from "../interfaces/user.interface";
+import UserModel from "../models/user";
+
+//ADMIN
+
+const get_User = async(idUser: string) => {
+    const responseItem = await UserModel.findById({_id: idUser});
+    return responseItem;
+};
 
 const get_AllUsers = async() => {
     const responseItem = await UserModel.find({});
@@ -14,13 +21,16 @@ const get_Users = async(pageNumber: number, nPerPage: number) => {
     return responseItem;
 };
 
-const get_User = async(idUser: string) => {
-    const responseItem = await UserModel.findById({_id: idUser});
+const get_UserCount = async() => {
+    const responseItem = await UserModel.find({}).count();
     return responseItem;
 };
 
-const get_UserCount = async() => {
-    const responseItem = await UserModel.find({}).count();
+//USERS
+
+const get_UserProfile = async(idUser: string) => {
+    const responseItem = await UserModel.findById({_id: idUser}, {name: 0, surname: 0,
+        email: 0, password: 0, role: 0, active: 0}); //Ignore those properties
     return responseItem;
 };
 
@@ -30,33 +40,10 @@ const get_UsersProfile = async(pageNumber: number, nPerPage: number) => {
     return responseItem;
 };
 
-const get_UserProfile = async(idUser: string) => {
-    const responseItem = await UserModel.findById({_id: idUser}, {name: 0, surname: 0,
-        email: 0, password: 0, role: 0, active: 0}); //Ignore those properties
-    return responseItem;
-};
-
-const get_Insignia = async(idUser: string) => {
+const get_Badges = async(idUser: string) => {
     const responseItem = await UserModel.findById({_id: idUser});
     const response = responseItem?.badges;
     return response;
-};
-
-const log_in = async(email: string, password: string) => {
-    const user = await UserModel.findOne({email: email}, {password: password});
-    const responseItem = await UserModel.findById({_id: user?.id}, {name: 0, surname: 0,
-        email: 0, password: 0, role: 0, active: 0});
-    return responseItem;
-};
-
-const sign_up = async(item: User) => {
-    const user = await UserModel.findOne({email: item.email});
-    if (user!=null)
-        return "ALREADY_USED_EMAIL";
-    if(!item.role) { item.role = "user"; } //If role is not specified then role = "user";
-    item.active = true;
-    const responseItem = await UserModel.create(item);
-    return responseItem;
 };
 
 const update_User = async(idUser: string, data: User) => {
@@ -87,24 +74,7 @@ const delete_Follow = async(idUser: string, idFollowed: string) => {
     return responseItem;
 };
 
-const disable_User = async(idUser: string) => {
-    const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {active: false}, {new: true});
-    return responseItem;
-};
-
-const unable_User = async(idUser: string) => {
-    const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {active: true}, {new: true});
-    return responseItem;
-};
-
-const delete_User = async(idUser: string) => {
-    const responseItem = await UserModel.findByIdAndRemove({_id: idUser});
-    return responseItem;
-};
-
-const get_following = async (idUser: string, data: User) => {
+const get_Following = async (idUser: string, data: User) => {
     const responseItem = await UserModel.findById(
         {_id: idUser},
         ).populate({
@@ -118,7 +88,7 @@ const get_following = async (idUser: string, data: User) => {
         return responseItem;
 };
 
-const get_following_count = async (idUser: string, data: User) => {
+const get_Following_Count = async (idUser: string, data: User) => {
     const responseItem = await UserModel.findById(
         {_id: idUser},
         ).populate({
@@ -132,7 +102,7 @@ const get_following_count = async (idUser: string, data: User) => {
         return 0;
 };
 
-const get_followers = async (idUser: string, data: User) => {
+const get_Followers = async (idUser: string, data: User) => {
     const responseItem = await UserModel.findById(
         {_id: idUser},
         ).populate({
@@ -146,7 +116,7 @@ const get_followers = async (idUser: string, data: User) => {
         return responseItem;
 };
 
-const get_followers_count = async (idUser: string, data: User) => {
+const get_Followers_Count = async (idUser: string, data: User) => {
     const responseItem = await UserModel.findById(
         {_id: idUser},
         ).populate({
@@ -160,7 +130,7 @@ const get_followers_count = async (idUser: string, data: User) => {
         return 0;
 };
 
-const get_not_following = async (idUser: string, data: User) => {
+const get_Not_Following = async (idUser: string, data: User) => {
     const user = await UserModel.findById(idUser);
     if (user){
         const usersNotFollowing = await UserModel.find({
@@ -173,21 +143,24 @@ const get_not_following = async (idUser: string, data: User) => {
     }   
 };
 
-const get_not_following_count = async (idUser: string, data: User) => {
-    const user = await UserModel.findById(idUser);
-    if (user){
-        const usersNotFollowing = await UserModel.find({
-        _id: { $ne: idUser, $nin: user.following }
-        });
-        return usersNotFollowing.length; 
-    }
-    else {
-        return 0;
-    }   
+const unable_User = async(idUser: string) => {
+    const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
+        {active: true}, {new: true});
+    return responseItem;
 };
 
-export { get_AllUsers, get_Users, get_User, get_UserCount, get_UsersProfile, get_UserProfile, log_in,
-    sign_up, update_User, add_Follow, delete_Follow, disable_User, delete_User, 
-    unable_User, get_following, get_not_following, get_following_count, get_followers_count, 
-    get_not_following_count, get_followers, get_Insignia };
+const disable_User = async(idUser: string) => {
+    const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
+        {active: false}, {new: true});
+    return responseItem;
+};
+
+const delete_User = async(idUser: string) => {
+    const responseItem = await UserModel.findByIdAndRemove({_id: idUser});
+    return responseItem;
+};
+
+export { get_AllUsers, get_Users, get_User, get_UserCount, get_UsersProfile, get_UserProfile, 
+    update_User, add_Follow, delete_Follow, disable_User, delete_User, unable_User, get_Following, 
+    get_Not_Following, get_Following_Count, get_Followers_Count, get_Followers, get_Badges };
 

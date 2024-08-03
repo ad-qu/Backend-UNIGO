@@ -97,6 +97,7 @@ const updateChallenge = async ({params, body}:Request, res:Response) => {
 
 const deleteChallenge = async ({params}:Request, res:Response) => {
     try{
+        console.log(params);
         const {idChallenge} = params;
         const response = await delete_Challenge(idChallenge);
         res.send(response);

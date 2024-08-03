@@ -17,8 +17,8 @@ router.get("/get/availableChallenges/:idUser", getNotCompletedChallenges);
 router.post("/add", checkJwt, addChallenge); //Create a challenge
 router.post("/update/:idChallenge", checkJwt, updateChallenge); //Update the details of a challenge
 
-router.post("/challenges/add/:idUser/:idChallenge",checkJwt, addChallengeToUser); //Adds a challenge to the list of completed challenges that a user has (history)
-router.post("/post/solve", checkJwt, solveChallenge); //Marks a challenge as solved for a user and adds the experience to it
+router.post("/challenges/add/:idUser/:idChallenge", addChallengeToUser); //Adds a challenge to the list of completed challenges that a user has (history)
+router.post("/post/solve", solveChallenge); //Marks a challenge as solved for a user and adds the experience to it
 
 router.delete("/delete/:idChallenge", checkJwt, deleteChallenge); //Deletes a challenge
 

@@ -55,8 +55,8 @@ const getFollowingPeople = async ({params}:Request, res:Response) => {
 
 const deleteEntities = async ({params}:Request, res:Response) => {
     try{
-        const {idUser} = params;
-        const response = await delete_Entities(idUser);
+        const {idEntity} = params;
+        const response = await delete_Entities(idEntity);
         res.send(response);
     } catch(e){
         handleHttp(res, "ERROR_DELETE_ENTITY");

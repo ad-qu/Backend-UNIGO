@@ -2,75 +2,62 @@ import { Auth } from "./../interfaces/auth.interface";
 import UserModel from "../models/user";
 import { User } from "../interfaces/user.interface";
 import { encrypt, verified } from "../utils/bcrypt.handle";
-import { generateToken, generateTokenCompleted } from "../utils/jwt.handle";
+import { generateTokenCompleted } from "../utils/jwt.handle";
 
-const registerNewUser = async ({ name, surname, username, email, password, role, experience, level}: User) => {
+const signupUser = async ({ name, surname, username, email, password, level, experience, role }: User) => {
     const checkIs = await UserModel.findOne({ email });
-    if (checkIs) return "ALREADY_USER";
-    experience = 0;
+    if (checkIs) { return "ALREADY_USER"; }
+   
     level = 1;
-    if (role==null)
-      role= "user";
+    experience = 0;
+    if (role == null) { role = "user"; }
     const active = true;
     const passHash = await encrypt(password);
-    const registerNewUser = await UserModel.create({email, password: passHash, name, surname, role, experience, username, level, active});
-    console.log(password);
-    return registerNewUser;
-  };
+      
+    const newUser = await UserModel.create({ name, surname, username, email, password: passHash, level, experience, role, active });
+      
+    return newUser;
+};
 
-  // const loginUser = async ({ email, password }: Auth) => {
-  //   const checkIs = await UserModel.findOne({ email });
-  //   if (!checkIs) return "NOT_FOUND_USER";
-  
-  //   const passwordHash = checkIs.password; 
-  //   const isCorrect = await verified(password, passwordHash);
-  
-  //   if (!isCorrect) return "PASSWORD_INCORRECT";
-  
-  //   const token = generateToken(checkIs.email, checkIs.role);
-  //   const data = {token, user: checkIs};
-  //   return data;
-  // };
-
-  const tokenUser = async ({ email, password }: Auth) => {
+  const loginUser = async ({ email, password }: Auth) => {
     const checkIs = await UserModel.findOne({ email });
     if (!checkIs) return "NOT_FOUND_USER";
 
-    if (checkIs.active === false) return "NOT_ACTIVE_USER";
+    if (checkIs.active == false) return "NOT_ACTIVE_USER";
   
     const passwordHash = checkIs.password;
-    console.log("Pass con hash: " + passwordHash);     
-    const passHash2 = await encrypt(password);
-    // var isCorrect: boolean = false;
-    const isCorrect = await verified(password, passwordHash);
-    // if (passHash2 === passwordHash)
-    //   isCorrect = true;
-    // if (isCorrect === false) return "PASSWORD_INCORRECT";
-    if (!isCorrect) return "PASSWORD_INCORRECT";
 
-    //const token = generateToken(checkIs.email, checkIs.role);
-    const token = generateTokenCompleted(checkIs.id, checkIs.name, checkIs.surname,
-      checkIs.username, checkIs.role, checkIs.level, checkIs.imageURL, checkIs.experience);
-    const data = {token};
-    return data;
-  };
+    console.log("Hashed password: " + passwordHash); 
 
-  const tokenGoogle = async ({ email, password }: Auth) => {
-    const checkIs = await UserModel.findOne({ email });
-    if (!checkIs) return "NOT_FOUND_USER";
-
-    if (checkIs.active === false) return "NOT_ACTIVE_USER";
-  
-    const passwordHash = checkIs.password;
-    console.log("Pass con hash: " + passwordHash);     
     const isCorrect = await verified(password, passwordHash);
     if (!isCorrect) return "PASSWORD_INCORRECT";
 
-    //const token = generateToken(checkIs.email, checkIs.role);
     const token = generateTokenCompleted(checkIs.id, checkIs.name, checkIs.surname,
       checkIs.username, checkIs.role, checkIs.level, checkIs.imageURL, checkIs.experience);
-    const data = {token};
-    return data;
-  };
 
-export {registerNewUser, tokenUser, tokenGoogle};
+    const data = {token};
+    
+    return data;
+};
+
+const signupGoogle = async ({ name, surname, username, email, password, level, experience, role }: User) => {
+  const checkIs = await UserModel.findOne({ email });
+  if (checkIs) { return "ALREADY_USER"; }
+ 
+  level = 1;
+  experience = 0;
+  if (role == null) { role = "user"; }
+  const active = true;
+  const passHash = await encrypt(password);
+    
+  const googleUser = await UserModel.create({ name, surname, username, email, password: passHash, level, experience, role, active });
+    
+  const token = generateTokenCompleted(googleUser.id, googleUser.name, googleUser.surname,
+    googleUser.username, googleUser.role, googleUser.level, googleUser.imageURL, googleUser.experience);
+    
+  const data = {token};
+
+  return data;
+};
+
+export { signupUser, loginUser, signupGoogle };

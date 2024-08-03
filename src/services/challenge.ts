@@ -22,7 +22,6 @@ const add_Challenge = async (item: Challenge) => {
         name: item.name,
         itinerary: item.itinerary
     });
-    console.log("1");
 
     if (existingChallenge) {
         return "ALREADY_CHALLENGE_NAMED";
@@ -31,7 +30,6 @@ const add_Challenge = async (item: Challenge) => {
     if (!itinerary) {
         throw new Error('ITINERARY_NOT_FOUND');
     }
- console.log("2");
     item.imageURL = itinerary.imageURL;
     const responseInsert = await ChallengeModel.create(item);
 
@@ -44,7 +42,6 @@ const add_Challenge = async (item: Challenge) => {
         },
         { new: true }
     );
-    console.log("3");
 
     return responseInsert;
 };
@@ -100,12 +97,22 @@ const get_ItineraryChallenges = async (idItinerary: string) => {
     const challenges = itin?.challenges as ObjectId[]; 
     return challenges;
 };
-const delete_Challenge = async (idChallenge: string) => {
-    const responseItem = await ChallengeModel.findByIdAndRemove({_id: idChallenge});
 
-    await ItineraryModel.updateOne(
-        { challenges: idChallenge },
-        { $pull: { challenges: idChallenge } }
+const delete_Challenge = async (idChallenge: string) => {
+    const challenge = await ChallengeModel.findById(idChallenge);
+    if (!challenge) {
+        throw new Error('CHALLENGE_NOT_FOUND');
+    }
+
+    const responseItem = await ChallengeModel.findByIdAndRemove(idChallenge);
+
+    await ItineraryModel.findByIdAndUpdate(
+        challenge.itinerary,
+        {
+            $pull: { challenges: idChallenge },
+            $inc: { number: -1 }
+        },
+        { new: true }
     );
 
     return responseItem;
@@ -132,7 +139,7 @@ const add_ChallengeToUser = async(idUser: string, idChallenger: string) => {
     const chall = await ChallengeModel.findById({_id: idChallenger});
     const awardedExp = chall?.experience;
     const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
-        {$addToSet: {record: new Types.ObjectId(idChallenger)},$inc: { exp: awardedExp }}, {new: true});
+        {$addToSet: {history: new Types.ObjectId(idChallenger)},$inc: { experience: awardedExp }}, {new: true});
         console.log(`El responseItem del add_challenge es ${responseItem}`);
 
     const itin = await ItineraryModel.findOne({name: chall?.itinerary});

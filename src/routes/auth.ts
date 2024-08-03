@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { tokenCtrl, registerCtrl, googleControl } from "../controllers/auth";
+import { loginControl, signupControl, googleControl } from "../controllers/auth";
 
 const router = Router();
 
-router.post("/register", registerCtrl); 
-router.post("/login", tokenCtrl);
+router.post("/signup", signupControl); 
+router.post("/login", loginControl);
 
-router.post("/loginGAuth", googleControl);
-//router.post("/loginAppleAuth", appleControl);
+router.post("/googleAuthSignUp", googleControl);
 
 export {router};
