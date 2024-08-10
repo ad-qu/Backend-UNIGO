@@ -9,7 +9,7 @@ const getAllChallenges = async (req:Request, res:Response) => {
         const response = await get_AllChallenges();
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ALL_CHALLENGES");
+        handleHttp(res, 500);
     }
 };
 
@@ -19,7 +19,7 @@ const getChallenges = async ({params}:Request, res:Response) => {
         const response = await get_Challenges(Number(pageNumber), Number(nPerPage));
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_CHALLENGES");
+        handleHttp(res, 500);
     }
 };
 
@@ -29,7 +29,7 @@ const getHistoryChallenges = async ({params}:Request, res:Response) => {
         const response = await get_HistoryChallenges(idUser);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_HISTORY");
+        handleHttp(res, 500);
     }
 };
 
@@ -39,7 +39,7 @@ const getNotCompletedChallenges = async ({params}:Request, res:Response) => {
         const response = await get_NotCompletedChallenges(idUser);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_CHALLENGES");
+        handleHttp(res, 500);
     }
 };
 
@@ -50,7 +50,7 @@ const getChallenge = async ({params}:Request, res:Response) => {
         const data = response ? response:"NOT_FOUND";
         res.send(data);
     } catch(e){
-        handleHttp(res, "ERROR_GET_CHALLENGE");
+        handleHttp(res, 500);
     }
 };
 
@@ -60,7 +60,7 @@ const getItineraryChallenges = async ({params}:Request, res:Response) => {
         const response = await get_ItineraryChallenges(idItinerary);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_HISTORY");
+        handleHttp(res, 500);
     }
 };
 
@@ -69,7 +69,7 @@ const getChallengeCount = async (req:Request, res:Response) => {
         const response = await get_ChallengeCount();
         res.send(response.toString());
     } catch(e){
-        handleHttp(res, "ERROR_COUNTING_CHALLENGES");
+        handleHttp(res, 500);
     }
 };
 
@@ -81,7 +81,7 @@ const addChallenge = async ({body}:Request, res:Response) => {
     } catch(e){
         console.log("2");
 
-        handleHttp(res,"ERROR_POST_CHALLENGE");
+        handleHttp(res, 500);
     }
 };
 
@@ -91,7 +91,7 @@ const updateChallenge = async ({params, body}:Request, res:Response) => {
         const response = await update_Challenge(idChallenge, body);
         res.send(response);
     } catch (e){
-        handleHttp(res, "ERROR_UPDATE_CHALLENGE");
+        handleHttp(res, 500);
     }
 };
 
@@ -102,7 +102,7 @@ const deleteChallenge = async ({params}:Request, res:Response) => {
         const response = await delete_Challenge(idChallenge);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_DELETE_CHALLENGE");
+        handleHttp(res, 500);
     }
 };
 
@@ -112,7 +112,7 @@ const addChallengeToUser = async ({params}:Request, res:Response) => {
         const response = await add_ChallengeToUser(idUser, idChallenge);
         res.send(response);
     }catch(e){
-        handleHttp(res, "ERROR_POST_USER");
+        handleHttp(res, 500);
     }
 };
 
@@ -122,7 +122,7 @@ const solveChallenge = async ({body}:Request, res:Response) => {
         const response = await solve_Challenge(idChallenge, answer, idUser);
         res.send(response);
     }catch(e){
-        handleHttp(res, "ERROR_SOLVING_CHALLENGE");
+        handleHttp(res, 500);
     }
 };
 export{ getHistoryChallenges, addChallengeToUser, solveChallenge, getNotCompletedChallenges, getItineraryChallenges, getAllChallenges, getChallenges, getChallenge, getChallengeCount, addChallenge, updateChallenge, 

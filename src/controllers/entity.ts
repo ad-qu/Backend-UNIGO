@@ -8,7 +8,7 @@ const getAllEntities = async(req:Request, res:Response) => {
         const response = await get_AllEntities();
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ALL_ENTITIES");
+        handleHttp(res, 500);
     }
 };
 
@@ -19,7 +19,7 @@ const getEntity = async({params}:Request, res:Response) => {
         const data = response ? response: "NOT_FOUND";
         res.send(data);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ENTITY");
+        handleHttp(res, 500);
     }
 };
 
@@ -29,7 +29,7 @@ const getNotFollowingEntities = async ({params}:Request, res:Response) => {
         const response = await get_Not_Following_Entities(idUser);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_NOT_ENTITIES");
+        handleHttp(res, 500);
     }
 };
 
@@ -39,7 +39,7 @@ const getFollowersEntities = async ({params}:Request, res:Response) => {
         const response = await get_Following_Entities(idUser);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_NOT_ENTITIES");
+        handleHttp(res, 500);
     }
 };
 
@@ -49,7 +49,7 @@ const getFollowingPeople = async ({params}:Request, res:Response) => {
         const response = await get_FollowingPeople(idEntity);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_NOT_USERS");
+        handleHttp(res, 500);
     }
 };
 
@@ -59,7 +59,7 @@ const deleteEntities = async ({params}:Request, res:Response) => {
         const response = await delete_Entities(idEntity);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_DELETE_ENTITY");
+        handleHttp(res, 500);
     }
 };
 
@@ -74,7 +74,7 @@ const addEntity = async({body}:Request, res:Response) => {
             res.send(response);
         }
     }catch(e){
-        handleHttp(res, "ERROR_CREATION");
+        handleHttp(res, 500);
     }
 };
 
@@ -84,7 +84,7 @@ const addFollowEntities = async ({params}:Request, res:Response) => {
         const response = await add_FollowEntity(idUser, idEntity);
         res.send(response);
     }catch(e){
-        handleHttp(res, "ERROR_FOLLOWING_ENTITY");
+        handleHttp(res, 500);
     }
 };
 
@@ -94,7 +94,7 @@ const updateEntity = async ({params, body}:Request, res:Response) => {
         const response = await update_Entity(idEntity, body);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_UPDATE_ENTITY");
+        handleHttp(res, 500);
     }
 };
 
@@ -104,7 +104,7 @@ const deleteFollowEntities = async ({params}:Request, res:Response) => {
         const response = await delete_FollowEntity(idUser, idEntity);
         res.send(response);
     }catch(e){
-        handleHttp(res, "ERROR_UNFOLLOWING_ENTITY");
+        handleHttp(res, 500);
     }
 };
 

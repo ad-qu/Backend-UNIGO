@@ -8,7 +8,7 @@ const getAllCampus = async (req:Request, res:Response) => {
         const response = await get_AllCampus();
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ALL_CAMPUS");
+        handleHttp(res, 500);
     }
 };
 
@@ -18,7 +18,7 @@ const getListCampus = async ({params}:Request, res:Response) => {
         const response = await get_ListCampus(idEntity);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_LIST_CAMPUS");
+        handleHttp(res, 500);
     }
 };
 
@@ -29,7 +29,7 @@ const getCampus = async({params}:Request, res:Response) => {
         const data = response ? response: "NOT_FOUND";
         res.send(data);
     } catch(e){
-        handleHttp(res, "ERROR_GET_CAMPUS");
+        handleHttp(res, 500);
     }
 };
 
@@ -39,7 +39,7 @@ const addCampus = async ({params, body}:Request, res:Response) => {
         const response = await add_Campus(idEntity, body);
         res.send(response);
     } catch (e) {
-        handleHttp(res,"ERROR_POST_CAMPUS");
+        handleHttp(res, 500);
     }
 };
 
@@ -49,7 +49,7 @@ const deleteCampus = async ({params}:Request, res:Response) => {
         const response = await delete_Campus(idNew);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_DELETE_CAMPUS");
+        handleHttp(res, 500);
     }
 };
 

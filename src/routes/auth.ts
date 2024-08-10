@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { signUpControl, logInControl, googleControl } from "../controllers/auth";
 
 const router = Router();

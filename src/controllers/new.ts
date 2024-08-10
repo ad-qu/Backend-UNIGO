@@ -8,7 +8,7 @@ const getAllNews = async (req:Request, res:Response) => {
         const response = await get_AllNews();
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ALL_NEWS");
+        handleHttp(res, 500);
     }
 };
 
@@ -18,7 +18,7 @@ const getEntityNews = async ({params}:Request, res:Response) => {
         const response = await get_EntityNews(idEntity);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ENTITY_NEWS");
+        handleHttp(res, 500);
     }
 };
 
@@ -29,7 +29,7 @@ const getNew = async({params}:Request, res:Response) => {
         const data = response ? response: "NOT_FOUND";
         res.send(data);
     } catch(e){
-        handleHttp(res, "ERROR_GET_NEW");
+        handleHttp(res, 500);
     }
 };
 
@@ -39,7 +39,7 @@ const addNew = async ({params, body}:Request, res:Response) => {
         const response = await add_New(idEntity, body);
         res.send(response);
     } catch (e) {
-        handleHttp(res,"ERROR_POST_NEW");
+        handleHttp(res, 500);
     }
 };
 
@@ -49,7 +49,7 @@ const deleteNew = async ({params}:Request, res:Response) => {
         const response = await delete_New(idNew);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_DELETE_NEW");
+        handleHttp(res, 500);
     }
 };
 

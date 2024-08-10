@@ -8,7 +8,7 @@ const getAllItineraries = async (req:Request, res:Response) => {
         const response = await get_AllItineraries();
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ALL_ITINERARIES");
+        handleHttp(res, 500);
     }
 };
 
@@ -18,7 +18,7 @@ const getEntityItineraries = async ({params, body}:Request, res:Response) => {
         const response = await get_EntityItineraries(idEntity);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ENTITY_ITINERARIES");
+        handleHttp(res, 500);
     }
 };
 
@@ -28,7 +28,7 @@ const getUserItineraries = async ({params}:Request, res:Response) => {
         const response = await get_UserItineraries(idUser);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_USER_ITINERARIES");
+        handleHttp(res, 500);
     }
 };
 
@@ -39,7 +39,7 @@ const getItinerary = async({params}:Request, res:Response) => {
         const data = response ? response: "NOT_FOUND";
         res.send(data);
     } catch(e){
-        handleHttp(res, "ERROR_GET_ENTITY");
+        handleHttp(res, 500);
     }
 };
 
@@ -55,7 +55,7 @@ const addItinerary = async ({params, body}:Request, res:Response) => {
             res.send(response);
         }
     }catch(e){
-        handleHttp(res,"ERROR_POST_ITINERARY");
+        handleHttp(res, 500);
     }
 };
 
@@ -65,7 +65,7 @@ const deleteItinerary = async ({params}:Request, res:Response) => {
         const response = await delete_Itinerary(idItinerary);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_DELETE_ITINERARY");
+        handleHttp(res, 500);
     }
 };
 

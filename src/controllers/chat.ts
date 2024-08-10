@@ -10,7 +10,7 @@ const getChat = async({params}:Request, res:Response) => {
         const response = await get_Chat(idChat);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_GET_CHAT");
+        handleHttp(res, 500);
     }
 };
 
@@ -22,7 +22,7 @@ const addChat = async ({params}:Request, res:Response) => {
         res.send(response);
    
     }catch(e){
-        handleHttp(res,"ERROR_POST_CHAT");
+        handleHttp(res, 500);
     }
 };
 
@@ -34,7 +34,7 @@ const updateChat = async ({params}:Request, res:Response) => {
         res.send(response);
    
     }catch(e){
-        handleHttp(res,"ERROR_POST_CHAT");
+        handleHttp(res, 500);
     }
 };
 
@@ -44,7 +44,7 @@ const deleteChat = async ({params}:Request, res:Response) => {
         const response = await delete_Chat(idChat);
         res.send(response);
     } catch(e){
-        handleHttp(res, "ERROR_DELETE_CHAT");
+        handleHttp(res, 500);
     }
 };
 

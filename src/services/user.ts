@@ -1,18 +1,16 @@
 import { Types } from "mongoose";
-import { encrypt } from "../utils/bcrypt.handle";
-
 import { User } from "../interfaces/user.interface";
 import UserModel from "../models/user";
+import { encrypt } from "../utils/bcrypt.handle";
 
 //ADMIN
-
-const get_User = async(idUser: string) => {
-    const responseItem = await UserModel.findById({_id: idUser});
+const get_AllUsers = async() => {
+    const responseItem = await UserModel.find({});
     return responseItem;
 };
 
-const get_AllUsers = async() => {
-    const responseItem = await UserModel.find({});
+const get_User = async(idUser: string) => {
+    const responseItem = await UserModel.findById({_id: idUser});
     return responseItem;
 };
 
@@ -27,7 +25,6 @@ const get_UserCount = async() => {
 };
 
 //USERS
-
 const get_UserProfile = async(idUser: string) => {
     const responseItem = await UserModel.findById({_id: idUser}, {name: 0, surname: 0,
         email: 0, password: 0, role: 0, active: 0}); //Ignore those properties
