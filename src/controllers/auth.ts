@@ -1,65 +1,65 @@
 import { Request, Response } from "express";
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../utils/http.handle";
 
-import { signupUser, loginUser, signupGoogle } from "../services/auth";
+import { signUp, logIn, signUpGoogle } from "../services/auth";
 
-const signupControl = async ({ body }: Request, res: Response) => {
+const signUpControl = async ({ body }: Request, res: Response) => {
   try{
-    const response = await signupUser(body);
-    if (response == "ALREADY_USER"){
-        res.status(220);
-        res.send(response);
-        console.log("Already existing user");
+    const response = await signUp(body);
+    if (response == 409) {
+      handleHttp(res, 409);
+    }
+    else if (response == null) {
+      handleHttp(res, 204);
     }
     else {
-        res.send(response);
-    }        
-} catch(e){
-    handleHttp(res, "ERROR_SIGNUP");
-    console.log("Error");
+      res.status(201).send({
+        response,
+      }); 
+    }    
+  } catch(e){
+    handleHttp(res, 500);
   }
 };
 
-const loginControl = async ({ body }: Request, res: Response) => {
+const logInControl = async ({ body }: Request, res: Response) => {
   
   const { email, password } = body;
-  const responseUser = await loginUser({ email, password });
+  const response = await logIn({ email, password });
 
-  console.log("Password of the user: " + password);
-
-  if (responseUser == "PASSWORD_INCORRECT") {
-    res.status(222);
-    console.log("Password incorrect");
-    res.send(responseUser);
-  } else if (responseUser == "NOT_FOUND_USER") {
-    res.status(221);
-    console.log("Not found User");
-    res.send(responseUser);    
-  } else if (responseUser == "NOT_ACTIVE_USER") {
-    res.status(220);
-    console.log("No active user");
-    res.send(responseUser);
-  } else {
-    res.status(200);
-    res.send(responseUser);
+  if (response == 401) {
+    handleHttp(res, 500);
+  } 
+  else if (response == 404) {
+    handleHttp(res, 404);
+  } 
+  else if (response == 423) {
+    handleHttp(res, 423);
+  } 
+  else {
+    res.status(222).send({
+      response,
+    }); 
   }  
 };
 
 const googleControl = async ({ body }: Request, res: Response) => {
   try{
-    const response = await signupGoogle(body);
-    if (response == "ALREADY_USER"){
-        res.status(220);
-        res.send(response);
-        console.log("Already existing Google user");
+    const response = await signUpGoogle(body);
+    if (response == 409) {
+      handleHttp(res, 409);
+    }
+    else if (response == null) {
+      handleHttp(res, 204);
     }
     else {
-        res.send(response);
-    }        
-} catch(e){
-    handleHttp(res, "ERROR_SIGNUP");
-    console.log("Error");
+      res.status(201).send({
+        response,
+      }); 
+    }    
+  } catch(e) {
+    handleHttp(res, 500);
   }
 };
 
-export { signupControl, loginControl, googleControl };
+export { signUpControl, logInControl, googleControl };

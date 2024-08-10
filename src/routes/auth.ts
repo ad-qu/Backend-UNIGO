@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { loginControl, signupControl, googleControl } from "../controllers/auth";
+import { signUpControl, logInControl, googleControl } from "../controllers/auth";
 
 const router = Router();
 
-router.post("/signup", signupControl); 
-router.post("/login", loginControl);
+router.post("/signUp", signUpControl); 
+router.post("/logIn", logInControl);
 
 router.post("/googleAuthSignUp", googleControl);
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../utils/http.handle";
 import { get_AllCampus, get_ListCampus, get_Campus, add_Campus, delete_Campus } from "../services/campus"; 
 
 const getAllCampus = async (req:Request, res:Response) => {

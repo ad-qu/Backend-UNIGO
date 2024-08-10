@@ -20,11 +20,11 @@ const generateTokenCompleted = (idUser: string, name: string, surname: string, u
 //We verify the signature of the token that we receive as a parameter
 const verifyToken = (jwt: string) => {
   try {
-    const isOk = verify(jwt, JWT_SECRET); //We verify 
+    const isOk = verify(jwt, JWT_SECRET); //Verifying the token
     return isOk;
   } catch(err) {
     return null;
   }
 };
 
-export { generateToken, verifyToken, generateTokenCompleted };
+export { generateToken, generateTokenCompleted, verifyToken };

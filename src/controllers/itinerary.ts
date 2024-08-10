@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../utils/http.handle";
 import { get_AllItineraries, add_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries, get_Itinerary } from "../services/itinerary"; 
 
 const getAllItineraries = async (req:Request, res:Response) => {

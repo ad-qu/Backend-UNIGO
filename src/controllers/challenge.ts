@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../utils/http.handle";
 import { solve_Challenge, add_ChallengeToUser, get_ItineraryChallenges, get_AllChallenges, get_Challenges, get_Challenge, get_ChallengeCount, add_Challenge, update_Challenge, 
     delete_Challenge, get_HistoryChallenges, get_NotCompletedChallenges } from "../services/challenge"; 
 

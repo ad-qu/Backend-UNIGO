@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../utils/http.handle";
 import { get_AllEntities, get_Not_Following_Entities, get_Following_Entities, delete_Entities, 
     add_Entity, delete_FollowEntity, add_FollowEntity, update_Entity, get_Entity, get_FollowingPeople } from "../services/entity";
 

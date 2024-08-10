@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../utils/http.handle";
 import { get_AllNews, get_EntityNews, get_New, add_New, delete_New } from "../services/new"; 
 
 const getAllNews = async (req:Request, res:Response) => {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../utils/http.handle";
 import{ get_Chat, add_Chat, delete_Chat }  from "../services/chat";
 
 import { encrypt } from "../utils/bcrypt.handle";
