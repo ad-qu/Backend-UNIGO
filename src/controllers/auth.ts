@@ -3,7 +3,7 @@ import { handleHttp } from "../utils/http.handle";
 import { signUp, logIn, signUpGoogle } from "../services/auth";
 
 const signUpControl = async ({ body }: Request, res: Response) => {
-  try{
+  try {
     const response = await signUp(body);
     if (response == 409) {
       handleHttp(res, 409);
@@ -22,35 +22,30 @@ const signUpControl = async ({ body }: Request, res: Response) => {
 };
 
 const logInControl = async ({ body }: Request, res: Response) => {
-  console.log("31231231");
-  const { email, password } = body;
-  const response = await logIn({ email, password });
-console.log("000000");
-  if (response == 401) {
-    console.log("1");
-
+  try {
+    const { email, password } = body;
+    const response = await logIn({ email, password });
+    if (response == 401) {
+      handleHttp(res, 401);
+    } 
+    else if (response == 404) {
+      handleHttp(res, 404);
+    } 
+    else if (response == 423) {
+      handleHttp(res, 423);
+    } 
+    else {
+      res.status(222).send({
+        response,
+      }); 
+    }  
+  } catch(e) {
     handleHttp(res, 500);
-  } 
-  else if (response == 404) {
-    console.log("2");
-    handleHttp(res, 404);
-  } 
-  else if (response == 423) {
-    console.log("3");
-
-    handleHttp(res, 423);
-  } 
-  else {
-    console.log("4");
-
-    res.status(222).send({
-      response,
-    }); 
-  }  
+  }
 };
 
 const googleControl = async ({ body }: Request, res: Response) => {
-  try{
+  try {
     const response = await signUpGoogle(body);
     if (response == 409) {
       handleHttp(res, 409);

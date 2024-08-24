@@ -32,10 +32,10 @@ const signUp = async ({ name, surname, username, email, password, level, experie
     if (!isCorrect) return 401;
 
     const token = generateTokenCompleted(check.id, check.name, check.surname,
-      check.username, check.role, check.level, check.imageURL, check.experience);
+      check.username, check.imageURL, check.experience,  check.role, check.level);
 
     const data = { token };
-    
+
     return data;
 };
 

@@ -7,37 +7,42 @@ const handleHttp = (res: Response, status: Number) => {
             message: "OK",
         });
     }
-    if(status == 201) {     
+    else if(status == 201) {     
         res.status(201).send({
             message: "Created",
         });
     }
-    if(status == 204) {     
+    else if(status == 204) {   
         res.status(204).send({
             message: "No content",
         });
     }
-    if(status == 401) {     
+    else if(status == 401) {  
         res.status(401).send({
             message: "Unauthorized",
         });
     }
-    if(status == 404) {     
+    else if(status == 404) {     
         res.status(404).send({
             message: "Not Found",
         });
     }
-    if(status == 409) {     
+    else if(status == 409) {     
         res.status(409).send({
             message: "Conflict",
         });
     }
-    if(status == 423) {     
+    else if(status == 423) {     
         res.status(423).send({
             message: "Locked",
         });
     }
-    if(status == 500) {     
+    else if(status == 500) {     
+        res.status(500).send({
+            message: "Internal Server Error",
+        });
+    }
+    else {
         res.status(500).send({
             message: "Internal Server Error",
         });
