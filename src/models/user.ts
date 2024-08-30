@@ -47,6 +47,11 @@ const UserSchema = new Schema<User>(
             ref: 'users',
             required: false,
         },
+        campus: {
+            type: Schema.Types.ObjectId,
+            ref: 'campus',
+            required: false,
+        },
         entities: {
             type: [Schema.Types.ObjectId],
             ref: 'entities',

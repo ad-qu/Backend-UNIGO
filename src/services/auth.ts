@@ -4,7 +4,7 @@ import UserModel from "../models/user";
 import { encrypt, verified } from "../utils/bcrypt.handle";
 import { generateTokenCompleted } from "../utils/jwt.handle";
 
-const signUp = async ({ name, surname, username, email, password, level, experience, role }: User) => {
+const signUp = async ({ name, surname, username, email, password, campus, level, experience, role }: User) => {
     const check = await UserModel.findOne({ email });
     if (check) { return 409; }
     else {
@@ -14,7 +14,7 @@ const signUp = async ({ name, surname, username, email, password, level, experie
       const active = true;
  
       const user = await UserModel.create({ name, surname, username, email, 
-        password: passHash, level, experience, role, active });
+        password: passHash, campus, level, experience, role, active });
       
       return user;
     }
@@ -34,7 +34,18 @@ const signUp = async ({ name, surname, username, email, password, level, experie
     const token = generateTokenCompleted(check.id, check.name, check.surname,
       check.username, check.imageURL, check.experience,  check.role, check.level);
 
-    const data = { token };
+      const data = {
+        token, 
+        _id: check.id,
+        name: check.name,
+        surname: check.surname,
+        username: check.username,
+        imageURL: check.imageURL,
+        campus: check.campus,
+        experience: check.experience,
+        role: check.role,
+        level: check.level
+    };
 
     return data;
 };
@@ -52,7 +63,7 @@ const signUpGoogle = async ({ name, surname, username, email, password, level, e
     const googleUser = await UserModel.create({ name, surname, username, email, password: passHash, level, experience, role, active });
     
     const token = generateTokenCompleted(googleUser.id, googleUser.name, googleUser.surname,
-      googleUser.username, googleUser.role, googleUser.level, googleUser.imageURL, googleUser.experience);
+      googleUser.username, googleUser.imageURL, googleUser.experience, googleUser.role, googleUser.level);
 
     const data = { token };
 

@@ -6,7 +6,7 @@ import { handleHttp } from "../utils/http.handle";
 const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
   try {
     const jwtByUser = req.headers.authorization || "";
-    const jwt = jwtByUser.split(" ").pop(); //Bearer: 11111
+    const jwt = jwtByUser.split(" ").pop(); 
     const isUser = verifyToken(`${jwt}`) as { username: string, role: string };
     if (!isUser) {
       handleHttp(res, 401);

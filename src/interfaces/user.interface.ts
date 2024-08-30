@@ -12,6 +12,7 @@ export interface User {
     badges: String[]; //The insignias won by the user
     followers?: ObjectId[];
     following?: ObjectId[];
+    campus?: ObjectId;
     entities?: ObjectId[];
     history?: ObjectId[]; //List of ended challenges
     role: "user" | "admin"; //admin == Has all the permissions 

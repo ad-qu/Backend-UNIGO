@@ -4,19 +4,28 @@ import { signUp, logIn, signUpGoogle } from "../services/auth";
 
 const signUpControl = async ({ body }: Request, res: Response) => {
   try {
+    console.log("213123");
+    console.log(body);
     const response = await signUp(body);
+    console.log(response);
     if (response == 409) {
+      console.log("1");
+
       handleHttp(res, 409);
     } 
     else if (response == null) {
+      console.log("2");
+
       handleHttp(res, 204);
     }
     else {
-      res.status(201).send({
-        response,
-      }); 
+      console.log("3");
+      console.log(response.campus
+            );      res.status(201).send(response); 
     }    
   } catch(e){
+    console.log("4");
+
     handleHttp(res, 500);
   }
 };
@@ -35,9 +44,7 @@ const logInControl = async ({ body }: Request, res: Response) => {
       handleHttp(res, 423);
     } 
     else {
-      res.status(222).send({
-        response,
-      }); 
+      res.status(222).send(response); 
     }  
   } catch(e) {
     handleHttp(res, 500);

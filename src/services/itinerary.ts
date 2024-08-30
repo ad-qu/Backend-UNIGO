@@ -84,7 +84,10 @@ const add_Itinerary = async (idEntity: string, item: Itinerary) => {
     );
     return responseInsert;
 };
-
+const update_Itinerary = async(idItinerary: string, data: Itinerary) => {
+    const responseItem = await EntityModel.findByIdAndUpdate({_id: idItinerary}, data, {new: true});
+    return responseItem;
+};
 const delete_Itinerary = async(idItinerary: string) => {
     const responseItem = await ItineraryModel.findByIdAndRemove({_id: idItinerary});
 
@@ -93,4 +96,4 @@ const delete_Itinerary = async(idItinerary: string) => {
     return responseItem;
 };
 
-export { get_AllItineraries, add_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries, get_Itinerary };
+export { get_AllItineraries, add_Itinerary, update_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries, get_Itinerary };

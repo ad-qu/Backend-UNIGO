@@ -5,9 +5,14 @@ export interface Entity {
     description: string;
     imageURL: string;
     verified: string;
-    followers: ObjectId[];
     admin: ObjectId;
+    campus: ObjectId;
+    followers: ObjectId[];
     itineraries?: ObjectId[];
     chat?: ObjectId[];
     news?: ObjectId[];
 }
+
+
+
+

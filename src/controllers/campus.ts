@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { handleHttp } from "../utils/http.handle";
-import { get_AllCampus, get_ListCampus, get_Campus, add_Campus, delete_Campus } from "../services/campus"; 
+import { get_AllCampus, get_Campus, add_Campus, delete_Campus } from "../services/campus"; 
 
 const getAllCampus = async (req:Request, res:Response) => {
     try{
@@ -12,20 +12,10 @@ const getAllCampus = async (req:Request, res:Response) => {
     }
 };
 
-const getListCampus = async ({params}:Request, res:Response) => {
-    try{
-        const {idEntity} = params;
-        const response = await get_ListCampus(idEntity);
-        res.send(response);
-    } catch(e){
-        handleHttp(res, 500);
-    }
-};
-
 const getCampus = async({params}:Request, res:Response) => {
     try{
-        const {idNew} = params;
-        const response = await get_Campus (idNew);
+        const {idCampus} = params;
+        const response = await get_Campus (idCampus);
         const data = response ? response: "NOT_FOUND";
         res.send(data);
     } catch(e){
@@ -33,10 +23,9 @@ const getCampus = async({params}:Request, res:Response) => {
     }
 };
 
-const addCampus = async ({params, body}:Request, res:Response) => {
+const addCampus = async ({body}:Request, res:Response) => {
     try{
-        const {idEntity} = params;
-        const response = await add_Campus(idEntity, body);
+        const response = await add_Campus(body);
         res.send(response);
     } catch (e) {
         handleHttp(res, 500);
@@ -45,12 +34,12 @@ const addCampus = async ({params, body}:Request, res:Response) => {
 
 const deleteCampus = async ({params}:Request, res:Response) => {
     try{
-        const {idNew} = params;
-        const response = await delete_Campus(idNew);
+        const {idCampus} = params;
+        const response = await delete_Campus(idCampus);
         res.send(response);
     } catch(e){
         handleHttp(res, 500);
     }
 };
 
-export { getAllCampus, getListCampus, getCampus, addCampus, deleteCampus }
+export { getAllCampus, getCampus, addCampus, deleteCampus }

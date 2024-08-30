@@ -21,6 +21,11 @@ const EntitySchema = new Schema<Entity>(
             type: String,
             required: false,
         },
+        campus: {
+            type: Schema.Types.ObjectId,
+            ref: 'campus',
+            required: true,
+        },
         followers: {
             type: [Schema.Types.ObjectId],
             ref: 'users',

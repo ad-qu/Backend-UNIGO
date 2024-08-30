@@ -22,7 +22,7 @@ const get_Entity = async(idEntity: string) => {
 const get_Not_Following_Entities = async (idUser: string) => {
     const user = await UserModel.findById(idUser);
     const entityNotFollowing = await EntityModel.find({_id: { $ne: idUser, $nin: user?.entities }})
-    .select('name description imageURL verified admin');
+    .select('name description imageURL verified admin campus');
     return entityNotFollowing;
 };
 
@@ -110,7 +110,7 @@ const add_Entity = async (item: Entity) => {
     return responseInsert;
 };
 
-const update_Entity = async(idEntity: string, data: User) => {
+const update_Entity = async(idEntity: string, data: Entity) => {
     const responseItem = await EntityModel.findByIdAndUpdate({_id: idEntity}, data, {new: true});
     return responseItem;
 };

@@ -6,7 +6,8 @@ import { Chat } from "../interfaces/chat.interface";
 const ChatSchema = new Schema<Chat>(
     {
         roomId: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: 'entities',
             required: true,
         },
         conversation: {

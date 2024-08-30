@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { handleHttp } from "../utils/http.handle";
-import { get_AllItineraries, add_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries, get_Itinerary } from "../services/itinerary"; 
+import { get_AllItineraries, add_Itinerary, update_Itinerary, delete_Itinerary, get_UserItineraries, get_EntityItineraries, get_Itinerary } from "../services/itinerary"; 
 
 const getAllItineraries = async (req:Request, res:Response) => {
     try{
@@ -21,7 +21,15 @@ const getEntityItineraries = async ({params, body}:Request, res:Response) => {
         handleHttp(res, 500);
     }
 };
-
+const updateItinerary = async ({params, body}:Request, res:Response) => {
+    try{
+        const {idItinerary} = params;
+        const response = await update_Itinerary(idItinerary, body);
+        res.send(response);
+    } catch(e){
+        handleHttp(res, 500);
+    }
+};
 const getUserItineraries = async ({params}:Request, res:Response) => {
     try{
         const {idUser} = params;
@@ -69,4 +77,4 @@ const deleteItinerary = async ({params}:Request, res:Response) => {
     }
 };
 
-export {getAllItineraries, addItinerary, deleteItinerary, getUserItineraries, getEntityItineraries, getItinerary}
+export {getAllItineraries, addItinerary,updateItinerary, deleteItinerary, getUserItineraries, getEntityItineraries, getItinerary}

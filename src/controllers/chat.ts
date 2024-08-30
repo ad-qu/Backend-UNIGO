@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { handleHttp } from "../utils/http.handle";
-import{ get_Chat, add_Chat, delete_Chat }  from "../services/chat";
+import{ get_Chat, add_Chat, update_Chat, delete_Chat }  from "../services/chat";
 
 import { encrypt } from "../utils/bcrypt.handle";
 
@@ -28,8 +28,8 @@ const addChat = async ({params}:Request, res:Response) => {
 
 const updateChat = async ({params}:Request, res:Response) => {
     try{
-        const {idEntity} = params;
-        const response = await add_Chat(idEntity);
+        const {roomId, idUser, senderName, message} = params;
+        const response = await update_Chat(roomId, idUser, senderName, message);
        
         res.send(response);
    

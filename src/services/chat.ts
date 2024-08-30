@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 
 import { New } from "../interfaces/new.interface";
 import EntityModel from "../models/entity";
@@ -11,12 +11,12 @@ const get_Chat = async(idChat: string) => {
 
 const add_Chat = async (idEntity: string) => {
    
-    const roomId = idEntity;
+    const entityId = idEntity;
     const conversation = null;
 
     const chat = new ChatModel({
         _id: new mongoose.Types.ObjectId(),
-        roomId,
+        entityId,
         conversation
     });
     
@@ -27,6 +27,10 @@ const add_Chat = async (idEntity: string) => {
     );
 
     return chat;
+};
+
+const update_Chat = async (roomId: string, idUser: string, senderName: string, message: string) => {
+   
 };
 
 const delete_Chat = async (idChat: string) => {
@@ -40,4 +44,4 @@ const delete_Chat = async (idChat: string) => {
     return responseItem;
 };
 
-export { get_Chat, add_Chat, delete_Chat };
+export { get_Chat, add_Chat, update_Chat, delete_Chat };

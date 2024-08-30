@@ -8,16 +8,6 @@ const CampusSchema = new Schema<Campus>(
             type: String,
             required: true,
         },
-        users: {
-            type: [Schema.Types.ObjectId],
-            ref: 'users',
-            required: false,
-        },
-        entities:{
-            type: [Schema.Types.ObjectId],
-            ref: 'entities',
-            required: false,
-        },
         latitude: {
             type: String,
             required: true,
