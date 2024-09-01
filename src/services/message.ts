@@ -1,41 +1,32 @@
 import mongoose, { Types } from "mongoose";
 
-import EntityModel from "../models/entity";
 import ChatModel from "../models/chat";
+import MessageModel from "../models/message";
 
-const get_Message = async(idChat: string) => {
-    const responseItem = await ChatModel.findById({_id: idChat}).populate('conversation');
+const get_Message = async(idMessage: string) => {
+    const responseItem = await MessageModel.findById({_id: idMessage});
     return responseItem;
 };
 
-const add_Message = async (idEntity: string) => {
+const add_Message = async (idChat: string, idUser: string, senderName: string, message: string) => {
    
-    const entityId = idEntity;
-    const conversation = null;
-
-    const chat = new ChatModel({
+    const newMsg = new MessageModel({
         _id: new mongoose.Types.ObjectId(),
-        entityId,
-        conversation
+        idUser,
+        senderName,
+        message
     });
-    
-    await EntityModel.findByIdAndUpdate(
-        {_id: idEntity},
-        {$addToSet: {chat: new Types.ObjectId(chat._id)}},
-        {new: true}
-    );
 
-    return chat;
+    return newMsg;
 };
 
-const delete_Message = async (idChat: string) => {
-    const responseItem = await ChatModel.findByIdAndRemove({_id: idChat});
+const delete_Message = async (idMessage: string) => {
+    const responseItem = await ChatModel.findByIdAndRemove({_id: idMessage});
 
-    await EntityModel.updateOne(
-        { chat: idChat },
-        { $pull: { chat: idChat } }
+    await ChatModel.updateOne(
+        { conversation: idMessage },
+        { $pull: { conversation: idMessage } }
     );
-
     return responseItem;
 };
 

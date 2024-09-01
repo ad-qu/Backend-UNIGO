@@ -19,9 +19,7 @@ const signUpControl = async ({ body }: Request, res: Response) => {
       handleHttp(res, 204);
     }
     else {
-      console.log("3");
-      console.log(response.campus
-            );      res.status(201).send(response); 
+      res.status(201).send(response); 
     }    
   } catch(e){
     console.log("4");
@@ -61,9 +59,7 @@ const googleControl = async ({ body }: Request, res: Response) => {
       handleHttp(res, 204);
     }
     else {
-      res.status(201).send({
-        response,
-      }); 
+      res.status(201).send(response); 
     }    
   } catch(e) {
     handleHttp(res, 500);

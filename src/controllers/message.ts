@@ -6,18 +6,19 @@ import { encrypt } from "../utils/bcrypt.handle";
 
 const getMessage = async({params}:Request, res:Response) => {
     try{
-        const {idChat} = params;
-        const response = await get_Message(idChat);
+        const {idMessage} = params;
+        const response = await get_Message(idMessage);
         res.send(response);
     } catch(e){
         handleHttp(res, 500);
     }
 };
 
-const addMessage = async ({params}:Request, res:Response) => {
+const addMessage = async ({params, body}:Request, res:Response) => {
     try{
-        const {idEntity} = params;
-        const response = await add_Message(idEntity);
+        const {idChat} = params;
+        const {idUser, senderName, message} = body;
+        const response = await add_Message(idChat, idUser, senderName, message);
        
         res.send(response);
    
@@ -28,8 +29,8 @@ const addMessage = async ({params}:Request, res:Response) => {
 
 const deleteMessage = async ({params}:Request, res:Response) => {
     try{
-        const {idChat} = params;
-        const response = await delete_Message(idChat);
+        const {idMessage} = params;
+        const response = await delete_Message(idMessage);
         res.send(response);
     } catch(e){
         handleHttp(res, 500);

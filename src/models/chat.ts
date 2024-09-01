@@ -22,6 +22,6 @@ const ChatSchema = new Schema<Chat>(
     }
 );
 
-const ChatModel = model('chats', ChatSchema);
+const ChatModel = model('chat', ChatSchema);
 
 export default ChatModel;

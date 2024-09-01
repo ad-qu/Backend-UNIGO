@@ -9,7 +9,7 @@ export interface Entity {
     campus: ObjectId;
     followers: ObjectId[];
     itineraries?: ObjectId[];
-    chat?: ObjectId[];
+    chat?: ObjectId;
     news?: ObjectId[];
 }
 

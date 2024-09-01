@@ -42,8 +42,8 @@ const EntitySchema = new Schema<Entity>(
             required: false,
         },
         chat:{
-            type: [Schema.Types.ObjectId],
-            ref: 'chats',
+            type: Schema.Types.ObjectId,
+            ref: 'chat',
             required: false,
         },
         news: {

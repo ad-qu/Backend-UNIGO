@@ -6,8 +6,8 @@ import { encrypt } from "../utils/bcrypt.handle";
 
 const getChat = async({params}:Request, res:Response) => {
     try{
-        const {idChat} = params;
-        const response = await get_Chat(idChat);
+        const {idEntity} = params;
+        const response = await get_Chat(idEntity);
         res.send(response);
     } catch(e){
         handleHttp(res, 500);
@@ -26,10 +26,11 @@ const addChat = async ({params}:Request, res:Response) => {
     }
 };
 
-const updateChat = async ({params}:Request, res:Response) => {
+const updateChat = async ({params, body}:Request, res:Response) => {
     try{
-        const {roomId, idUser, senderName, message} = params;
-        const response = await update_Chat(roomId, idUser, senderName, message);
+        const {idChat} = params;
+        const {idUser, senderName, message} = body;
+        const response = await update_Chat(idChat, idUser, senderName, message);
        
         res.send(response);
    

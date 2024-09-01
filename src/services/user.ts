@@ -26,7 +26,7 @@ const get_UserCount = async() => {
 
 //USERS
 const get_UserProfile = async(idUser: string) => {
-    const responseItem = await UserModel.findById({_id: idUser}, {name: 0, surname: 0,
+    const responseItem = await UserModel.findById({_id: idUser}, {surname: 0,
         email: 0, password: 0, role: 0, active: 0}); //Ignore those properties
     return responseItem;
 };
