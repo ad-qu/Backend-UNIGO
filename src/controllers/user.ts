@@ -82,12 +82,13 @@ const getBadges = async({params}:Request, res:Response) => {
     }
 };
 
-const updateUser = async ({params, body}:Request, res:Response) => {
-    try{
-        const {idUser} = params;
+const updateUser = async ({ params, body }: Request, res: Response) => {
+    try {
+        const { idUser } = params;
         const response = await update_User(idUser, body);
         res.send(response);
-    } catch(e){
+    } catch (e) {
+        console.error("Error en el servidor:", e);
         handleHttp(res, 500);
     }
 };

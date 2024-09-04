@@ -47,7 +47,7 @@ const deleteNew = async ({params}:Request, res:Response) => {
     try{
         const {idNew} = params;
         const response = await delete_New(idNew);
-        res.send(response);
+        res.status(200).send(response);
     } catch(e){
         handleHttp(res, 500);
     }

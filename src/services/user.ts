@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { User } from "../interfaces/user.interface";
 import UserModel from "../models/user";
 import { encrypt } from "../utils/bcrypt.handle";
+import { response } from "express";
 
 //ADMIN
 const get_AllUsers = async() => {
@@ -28,7 +29,8 @@ const get_UserCount = async() => {
 const get_UserProfile = async(idUser: string) => {
     const responseItem = await UserModel.findById({_id: idUser}, {surname: 0,
         email: 0, password: 0, role: 0, active: 0}); //Ignore those properties
-    return responseItem;
+   console.log(responseItem);
+        return responseItem;
 };
 
 const get_UsersProfile = async(pageNumber: number, nPerPage: number) => {
@@ -76,7 +78,7 @@ const get_Following = async (idUser: string, data: User) => {
         {_id: idUser},
         ).populate({
             path: "following",
-            select: "name surname username level imageURL active",
+            select: "name surname username level imageURL active campus",
         });
     if (responseItem?.following?.length!=0 && responseItem != null)
     {
@@ -104,7 +106,7 @@ const get_Followers = async (idUser: string, data: User) => {
         {_id: idUser},
         ).populate({
             path: "followers",
-            select: "name surname username level imageURL active",
+            select: "name surname username level imageURL active campus",
         });
     if (responseItem?.followers?.length!=0 && responseItem!=null)
     {

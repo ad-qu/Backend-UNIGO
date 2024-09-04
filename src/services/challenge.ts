@@ -138,6 +138,7 @@ const solve_Challenge = async (idChallenge: string, answer: string, idUser: stri
 const add_ChallengeToUser = async(idUser: string, idChallenger: string) => {
     const chall = await ChallengeModel.findById({_id: idChallenger});
     const awardedExp = chall?.experience;
+
     const responseItem = await UserModel.findByIdAndUpdate({_id: idUser},
         {$addToSet: {history: new Types.ObjectId(idChallenger)},$inc: { experience: awardedExp }}, {new: true});
         console.log(`El responseItem del add_challenge es ${responseItem}`);

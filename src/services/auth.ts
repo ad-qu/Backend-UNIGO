@@ -72,29 +72,10 @@ const signUpGoogle = async ({ name, surname, username, email, password, level, e
     if (role == null) { role = "user"; } 
     const active = true;
    
-    const googleUser = await UserModel.create({ name, surname, username, email, password: passHash, level, experience, role, active });
+    await UserModel.create({ name, surname, username, email, 
+      password: passHash, level, experience, role, active });
     
-    const token = generateTokenCompleted(
-      googleUser.id, googleUser.name, googleUser.surname,
-      googleUser.username, googleUser.imageURL, googleUser.experience, 
-      googleUser.role, googleUser.level
-  );
-
-      const data = {
-        token, 
-        _id: googleUser.id,
-        name: googleUser.name,
-        surname: googleUser.surname,
-        username: googleUser.username,
-        imageURL: googleUser?.imageURL,
-        campus: null,
-        latitude: null,  
-        longitude: null, 
-        experience: googleUser.experience,
-        role: googleUser.role,
-        level: googleUser.level,
-    };
-    return data;
+    return logIn({email, password});
   }
 };
 
