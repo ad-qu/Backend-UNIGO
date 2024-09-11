@@ -4,26 +4,17 @@ import { signUp, logIn, signUpGoogle } from "../services/auth";
 
 const signUpControl = async ({ body }: Request, res: Response) => {
   try {
-    console.log("213123");
-    console.log(body);
     const response = await signUp(body);
-    console.log(response);
     if (response == 409) {
-      console.log("1");
-
-      handleHttp(res, 409);
+        handleHttp(res, 409);
     } 
     else if (response == null) {
-      console.log("2");
-
       handleHttp(res, 204);
     }
     else {
       res.status(201).send(response); 
     }    
   } catch(e){
-    console.log("4");
-
     handleHttp(res, 500);
   }
 };
